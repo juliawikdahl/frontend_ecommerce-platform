@@ -1,30 +1,73 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <AppNavbar :categories="categories" />
+    <AppFooter />
+    <router-view />
+  </div>
 </template>
 
+<script>
+import AppNavbar from '@/components/Layout/AppNavbar.vue';
+import AppFooter from './components/Layout/AppFooter.vue';
+import { getCategories } from '@/api/categories';
+
+
+export default {
+  name: 'App',
+  components: {
+    AppNavbar,
+    AppFooter
+  },
+  data() {
+    return {
+      categories: [] 
+    };
+  }, methods: {
+  async fetchCategories() {
+    try {
+      this.categories = await getCategories();
+      console.log('Hämtade kategorier:', this.categories);
+      
+      // Logga detaljerade subkategorier
+      this.categories.forEach((category) => {
+        console.log(`Kategori: ${category.name}, Subkategorier: `, category.subCategories);
+      });
+    } catch (error) {
+      console.error('Fel vid hämtning av kategorier:', error);
+    }
+  },
+  
+},
+
+  mounted() {
+    this.fetchCategories();
+  }
+};
+</script>
+
 <style>
+
+/* Global styling för applikationen */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-
-nav {
-  padding: 30px;
+button {
+  background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+button:hover {
+    background-color: #343232;
+  }
 </style>

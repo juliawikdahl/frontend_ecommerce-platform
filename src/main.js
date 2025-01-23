@@ -1,5 +1,10 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store'; // Importera Vuex Store
 
-createApp(App).use(router).mount('#app')
+// Skapa appen, använd router och Vuex, och mounta den
+createApp(App)
+  .use(router)
+  .use(store) // Lägg till Vuex Store
+  .mount('#app');
