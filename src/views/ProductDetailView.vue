@@ -61,6 +61,7 @@
 <style scoped>
 .product-detail-view {
   padding: 20px;
+  text-align: left;
 }
 .spinner {
   display: flex;

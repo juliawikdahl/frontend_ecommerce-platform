@@ -9,6 +9,7 @@ export default {
         registerError: null,
         profileError: null,
         passwordError: null,
+        isAdmin: false,
     },
     getters: {
         isAuthenticated(state) {
@@ -27,7 +28,10 @@ export default {
             return state.profileError;
         },
         passwordError(state) {
-            return state.passwordError
+            return state.passwordError;
+        },
+        isAdmin(state) {
+            return state.isAdmin;
         }
     },
     mutations: {
@@ -57,6 +61,7 @@ export default {
           },
           setUserProfile(state, user) {
             state.user = user;
+            state.isAdmin = user?.isAdmin || false;
           }
     },
     actions: {

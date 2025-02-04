@@ -46,12 +46,15 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 24px;
   transition: color 0.3s;
 }
 
 .wishlist-button i {
   color: #888; /* Standardfärg för hjärtat */
+  font-size: 20px;
+}
+.wishlist-button i:hover {
+  transform: scale(1.2); /* Förstorar hjärtat lite när du hovrar över det */
 }
 
 .wishlist-button .fa-heart.far {

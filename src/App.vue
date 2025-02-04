@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppNavbar :categories="categories" />
+    <AppNavbar />
     <AppFooter />
     <router-view />
   </div>
@@ -9,7 +9,7 @@
 <script>
 import AppNavbar from '@/components/Layout/AppNavbar.vue';
 import AppFooter from './components/Layout/AppFooter.vue';
-import { getCategories } from '@/api/categories';
+
 
 
 export default {
@@ -18,30 +18,7 @@ export default {
     AppNavbar,
     AppFooter
   },
-  data() {
-    return {
-      categories: [] 
-    };
-  }, methods: {
-  async fetchCategories() {
-    try {
-      this.categories = await getCategories();
-      console.log('Hämtade kategorier:', this.categories);
-      
-      // Logga detaljerade subkategorier
-      this.categories.forEach((category) => {
-        console.log(`Kategori: ${category.name}, Subkategorier: `, category.subCategories);
-      });
-    } catch (error) {
-      console.error('Fel vid hämtning av kategorier:', error);
-    }
-  },
-  
-},
-
-  mounted() {
-    this.fetchCategories();
-  }
+ 
 };
 </script>
 
@@ -55,9 +32,8 @@ body {
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  text-align: center;
 }
 button {
   background-color: black;

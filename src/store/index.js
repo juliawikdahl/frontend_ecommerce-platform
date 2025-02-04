@@ -1,12 +1,16 @@
 import { createStore } from 'vuex';
 import auth from './auth';
 import wishlist from './wishlist';
+import categories from './categories';
+import products from './products';
 
 
 export default createStore({
   modules: {
     auth,
-    wishlist
+    wishlist,
+    categories,
+    products
   },
   state: {
     cart: [],
@@ -22,7 +26,6 @@ export default createStore({
     cartTotal(state) {
       return state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
     },
- 
   },
   mutations: {
     addToCart(state, product) {
@@ -39,7 +42,7 @@ export default createStore({
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       state.cart = storedCart;
     },
-      updateCart(state, updatedCart) {
+    updateCart(state, updatedCart) {
       state.cart = updatedCart;
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
@@ -47,7 +50,6 @@ export default createStore({
       state.cart = state.cart.filter(item => item.id !== productId);
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
-
     updateProductQuantity(state, { productId, quantity }) {
       const product = state.cart.find(item => item.id === productId);
       if (product) {
@@ -60,7 +62,7 @@ export default createStore({
     },
   },
   actions: {
-      addToCart({ commit }, product) {
+    addToCart({ commit }, product) {
       commit('addToCart', product);
     },
     loadCart({ commit }) {

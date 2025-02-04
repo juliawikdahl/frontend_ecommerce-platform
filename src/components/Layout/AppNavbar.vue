@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <!-- Logo -->
-      <router-link to="/" class="navbar-brand">Min App</router-link>
+      <router-link to="/" class="navbar-brand">Julias</router-link>
 
       <!-- Hamburger meny -->
       <button
@@ -84,6 +84,9 @@
               <li v-if="isAuthenticated">
                 <router-link to="/profile" class="dropdown-item">Mina uppgifter</router-link>
               </li>
+              <li v-if="isAuthenticated && isAdmin">
+                <router-link to="/admin" class="dropdown-item">Admin</router-link>
+              </li>
               <li v-if="isAuthenticated">
                 <a class="dropdown-item" @click="handleLogout">Logga ut</a>
               </li>
@@ -148,12 +151,6 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'AppNavbar',
-  props: {
-    categories: {
-      type: Array,
-      required: true
-    }
-  },
   data() {
     return {
       isCartDropdownVisible: false,
@@ -162,11 +159,19 @@ export default {
   },
   computed: {
     ...mapGetters(['cartItemCount', 'cart', 'cartTotal']),
-    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('auth', ['isAuthenticated', 'isAdmin']),
+    ...mapGetters('categories', ['categories']),
+  },
+  created() {
+    if (!this.categories || this.categories.length === 0) {
+      this.loadCategories();
+    }
   },
   methods: {
     ...mapActions(['updateProductQuantity', 'removeProduct']),
     ...mapActions('auth', ['logout']),
+    ...mapActions('categories', ['loadCategories']),
+  
     handleLogout() {
       this.logout();
       this.$router.push('/login');

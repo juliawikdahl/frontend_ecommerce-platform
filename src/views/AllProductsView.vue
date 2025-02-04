@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <div class="mt-4">
     <div v-if="loading" class="spinner">Laddar...</div>
     <div v-else>
-      <AllProductsList :products="products" />
+      <h1>All products</h1>
+      <AllProductsList :products="allProducts" :isAdmin="false"  />
     </div>
     <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
   </div>
 </template>
 
 <script>
-import { getAllProducts } from '@/api/products.js';  // Importera getAllProducts-funktionen
+import { mapActions, mapGetters } from "vuex";
 import AllProductsList from '@/components/products/AllProductsList.vue';  // Importera komponenten
 
 export default {
@@ -19,25 +20,24 @@ export default {
   },
   data() {
     return {
-      products: [],      // För lagring av hämtade produkter
       loading: true,     // För att visa laddningsindikator
       errorMessage: ''   // För att visa eventuella fel
     };
   },
-  methods: {
-    // Använd vår API-funktion för att hämta produkter
-    async fetchProducts() {
-      try {
-        this.products = await getAllProducts(); // Vänta på att produkterna ska hämtas
-        this.loading = false; // Döljer laddningsindikator
-      } catch (error) {
-        this.errorMessage = 'Något gick fel vid hämtning av produkter.';
-        this.loading = false;
-      }
-    }
+  computed: {
+    ...mapGetters('products', ['allProducts']),
   },
-  mounted() {
-    this.fetchProducts();  // Hämta produkter när komponenten laddas
+  methods: {
+    ...mapActions('products', ['loadAllProducts']),
+  },
+  async mounted() {
+   try {
+    await this.loadAllProducts();
+   } catch (error) {
+    this.errorMessage = "Kunde inte hämta produkter.";
+   } finally {
+    this.loading = false;
+   }
   }
 };
 </script>

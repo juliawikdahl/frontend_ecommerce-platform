@@ -3,7 +3,6 @@
         <h1>{{ categoryName }}</h1>
       <div v-if="loading" class="spinner">Laddar...</div>
       <div v-else>
-      
         <AllProductsList :products="products" />
       </div>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
@@ -66,5 +65,6 @@
     color: red;
     font-weight: bold;
   }
+
   </style>
   

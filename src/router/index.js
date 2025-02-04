@@ -9,11 +9,12 @@ import CategoryView from '@/views/CategoryView.vue';
 import cartView from '@/views/cartView.vue';
 import SubCategoryView from '@/views/SubCategoryView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import AdminView from '@/views/AdminView.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'homeView',
     component: HomeView
   },
   {
@@ -37,7 +38,7 @@ const routes = [
     component: AllProductsView
   },
   {
-    path: '/product/:id',  
+    path: '/:id',  
     name: 'product-detail',
     component: ProductDetailView, 
     props: true  
@@ -63,6 +64,11 @@ const routes = [
     path: '/profile',
     name: 'ProfileView',
     component: ProfileView
+  },
+  {
+    path: '/admin',
+    name: 'AdminView',
+    component: AdminView
   },
   // {
   //   path: '/subcategory/:name',  // Dynamisk ruta för subkategorier
