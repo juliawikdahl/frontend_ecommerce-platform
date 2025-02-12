@@ -3,6 +3,7 @@ import auth from './auth';
 import wishlist from './wishlist';
 import categories from './categories';
 import products from './products';
+import orders from './orders';
 
 
 export default createStore({
@@ -10,7 +11,8 @@ export default createStore({
     auth,
     wishlist,
     categories,
-    products
+    products,
+    orders
   },
   state: {
     cart: [],

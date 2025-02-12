@@ -10,6 +10,9 @@ import cartView from '@/views/cartView.vue';
 import SubCategoryView from '@/views/SubCategoryView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import AdminView from '@/views/AdminView.vue';
+import SearchResultsView from '@/views/SearchResultsView.vue';
+import PaymentView from '@/views/PaymentView.vue';
+import store from '@/store';
 
 const routes = [
   {
@@ -20,7 +23,15 @@ const routes = [
   {
     path: '/login',
     name: 'LoginView',
-    component: LoginView
+    component: LoginView,
+    beforeEnter: (to, from, next) => {
+      // Om användaren är redan inloggad, omdirigera till hem-sidan
+      if (store.getters['auth/isAuthenticated']) {
+        next({ name: 'homeView' }); // Redirect to home if already logged in
+      } else {
+        next(); // Otherwise, continue to login page
+      }
+    }
   },
   {
     path: '/register',
@@ -69,6 +80,17 @@ const routes = [
     path: '/admin',
     name: 'AdminView',
     component: AdminView
+  },
+  {
+    path: '/search',
+    name: 'SearchResultsView',
+    component: SearchResultsView, // Använd SearchResults-komponenten för denna rutt
+    props: route => ({ query: route.query.query }) // Skicka query-parametern som prop
+  },
+  {
+    path: '/payment',
+    name: 'PaymentView',
+    component: PaymentView // Betalningssidan
   },
   // {
   //   path: '/subcategory/:name',  // Dynamisk ruta för subkategorier

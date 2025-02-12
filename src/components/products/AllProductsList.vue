@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
               <label for="subcategory-select">Subkategori</label>
-              <select v-model="editedProduct.subCategoryId">
+              <select v-model="editedProduct.subCategoryId"  required>
                 <option v-for="sub in subcategories" :key="sub.id" :value="sub.id">
                   {{ sub.name }}
                 </option>
@@ -71,7 +71,7 @@
             <label for="product-image">Produktbild</label>
             <!-- Om det finns en bild, visa den som förhandsvisning -->
             <div v-if="editedProduct.encodedImage">
-              <img :src="`data:image/webp;base64,${editedProduct.encodedImage}`" alt="Current image" class="image-preview" />
+              <img  :src="getImageSource(editedProduct)" alt="Current image" class="image-preview" />
             </div>
             <input type="file" id="product-image" @change="handleImageChange" />
           </div>
@@ -109,6 +109,8 @@ export default {
       categories: [],
       subcategories: [],
       localProducts: [...this.products],  // Skapa en lokal kopia av produkterna
+
+
     };
   },
   components: {
@@ -151,6 +153,7 @@ export default {
     onCategoryChange() {
       const selectedCategory = this.categories.find(cat => cat.id === this.editedProduct.categoryId);
       this.subcategories = selectedCategory ? selectedCategory.subCategories : [];
+
     },
     closeEditModal() {
       this.showEditModal = false;
@@ -374,6 +377,12 @@ export default {
 .modal button[type="submit"]:hover {
   background: #0056b3;
 }
+.image-preview {
+  width: 50px;  /* Gör bilden 50px bred */
+  height: 50px; /* Gör bilden 50px hög */
+  object-fit: cover; /* Förhindrar att bilden blir förvrängd om den inte har rätt proportioner */
+}
+
 
 .cancel-button {
   background: #6c757d;

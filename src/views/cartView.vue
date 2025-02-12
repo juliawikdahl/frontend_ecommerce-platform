@@ -7,7 +7,7 @@
       <div class="cart-container" v-else>
         <div class="cart-item" v-for="item in cart" :key="item.id">
           
-           <img :src="item.encodedImage" alt="item.name" class="cart-img" />
+           <img :src="getImageSource(item)" alt="item.name" class="cart-img" />
           <div class="cart-item-details">
             <router-link :to="{name: 'product-detail', params: {id: item.id}}">
                <h4>{{ item.name }}</h4>
@@ -46,9 +46,21 @@ import { mapActions, mapGetters } from 'vuex';
     computed: {
         ...mapGetters(['cart', 'cartTotal']),
     },
+    mounted() {
+    this.$store.dispatch('loadCart');
+    },
     methods: {
       ...mapActions(['updateProductQuantity', 'removeProduct']),
 
+      getImageSource(item) {
+      if (item.encodedImage && item.encodedImage.startsWith('data:image')) {
+        return item.encodedImage;
+      }
+      if (item.encodedImage) {
+        return `data:image/webp;base64,${item.encodedImage}`;
+      }
+      return 'default-image.jpg';
+    },
     updateQuantity(productId, quantity) {
         this.updateProductQuantity({ productId, quantity });
       
@@ -59,13 +71,32 @@ import { mapActions, mapGetters } from 'vuex';
     },
     totalPriceForProduct(item) {
         return item.price * item.quantity;
-    }
-
     },
-    mounted() {
 
-    this.$store.dispatch('loadCart');
-    }
+    async proceedToCheckout() {
+      // Skapa order
+      const orderData = {
+        orderItems: this.cart.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+      };
+
+      try {
+        const response = await this.$store.dispatch('orders/createOrder', orderData);
+
+        // Om ordern skapades, omdirigera till betalning
+        if (response && response.message === "Order created successfully. Please complete the payment to confirm the order.") {
+          this.$router.push({ name: 'PaymentView' }); // Omdirigera till betalning
+        } else {
+          console.error('Order creation failed:', response);
+        }
+      } catch (error) {
+        console.error('Error during order creation:', error);
+      }
+    },
+  },
+   
   };
   </script>
   

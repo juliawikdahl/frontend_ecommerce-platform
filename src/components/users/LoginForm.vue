@@ -60,7 +60,7 @@ export default {
       };
       await this.login(credentials);
       if (!this.loginError) {
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'homeView' });
       }
     },
   },

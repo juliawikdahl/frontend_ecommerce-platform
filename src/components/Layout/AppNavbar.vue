@@ -17,9 +17,24 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
+
+
+
       <!-- Navbar länkar -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item mx-3">
+            <form @submit.prevent="searchProduct" class="d-flex">
+              <input
+                v-model="searchQuery"
+                class="form-control me-2"
+                type="search"
+                placeholder="Sök produkter"
+                aria-label="Sök"
+              />
+              <button class="btn btn-outline-light" type="submit">Sök</button>
+            </form>
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -103,7 +118,7 @@
               </div>
               <div class="cart-container" v-else>
                 <div class="cart-item" v-for="item in cart" :key="item.id">
-                  <img :src="item.encodedImage" alt="item.name" class="cart-img"/>
+                  <img :src="getImageSource(item)" alt="item.name" class="cart-img"/>
                   <div class="cart-item-details">
                     <router-link :to="{name: 'product-detail', params: {id: item.id}}" class="item-name">
                       <h4>{{ item.name }}</h4>
@@ -154,6 +169,7 @@ export default {
   data() {
     return {
       isCartDropdownVisible: false,
+      searchQuery: '',
    
     };
   },
@@ -167,6 +183,11 @@ export default {
       this.loadCategories();
     }
   },
+  watch: {
+  searchQuery(newQuery) {
+    console.log("Sökfrågan ändrades till:", newQuery);  // Loggar varje gång sökfrågan ändras
+  }
+},
   methods: {
     ...mapActions(['updateProductQuantity', 'removeProduct']),
     ...mapActions('auth', ['logout']),
@@ -185,6 +206,15 @@ export default {
     hideCartDropdown() {
       this.isCartDropdownVisible = false;
     },
+    getImageSource(item) {
+      if (item.encodedImage && item.encodedImage.startsWith('data:image')) {
+        return item.encodedImage;
+      }
+      if (item.encodedImage) {
+        return `data:image/webp;base64,${item.encodedImage}`;
+      }
+      return 'default-image.jpg';
+    },
     updateQuantity(productId, quantity) {
       this.updateProductQuantity({productId, quantity});
     },
@@ -193,6 +223,12 @@ export default {
     },
     totalPriceForProduct(item) {
       return item.price * item.quantity;
+    },
+    searchProduct() {
+      if (this.searchQuery.trim()) {
+        console.log("Sökfråga skickas:", this.searchQuery);
+        this.$router.push(`/search?query=${this.searchQuery}`);
+      }
     }
   },
 
