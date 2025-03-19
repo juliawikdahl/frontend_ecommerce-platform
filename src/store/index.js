@@ -4,6 +4,7 @@ import wishlist from './wishlist';
 import categories from './categories';
 import products from './products';
 import orders from './orders';
+import payment from './payment';
 
 
 export default createStore({
@@ -12,7 +13,8 @@ export default createStore({
     wishlist,
     categories,
     products,
-    orders
+    orders,
+    payment
   },
   state: {
     cart: [],

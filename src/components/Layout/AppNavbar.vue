@@ -18,8 +18,6 @@
       </button>
 
 
-
-
       <!-- Navbar länkar -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
@@ -29,10 +27,10 @@
                 v-model="searchQuery"
                 class="form-control me-2"
                 type="search"
-                placeholder="Sök produkter"
+                placeholder="Search for products"
                 aria-label="Sök"
               />
-              <button class="btn btn-outline-light" type="submit">Sök</button>
+              <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
           </li>
           <li class="nav-item dropdown">
@@ -50,7 +48,7 @@
               <!-- Visa Alla Produkter -->
               <li>
                 <router-link to="/allproducts" class="dropdown-item">
-                  Visa Alla Produkter
+                  Show all products
                 </router-link>
               </li>
 
@@ -68,13 +66,13 @@
                     </router-link>
                   </li>
                 </ul>
-                <p v-else class="dropdown-item text-muted">Inga subkategorier</p>
+                <p v-else class="dropdown-item text-muted">no subcategories</p>
               </li>
             </ul>
           </li>
 
           <li class="nav-item" v-if="isAuthenticated">
-            <router-link to="/wishlist" class="nav-link">Önskelista</router-link>
+            <router-link to="/wishlist" class="nav-link">Wishlist</router-link>
           </li>
 
           <!-- Profil dropdown meny -->
@@ -91,19 +89,19 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li v-if="!isAuthenticated">
-                <router-link to="/login" class="dropdown-item">Logga In</router-link>
+                <router-link to="/login" class="dropdown-item">Log in</router-link>
               </li>
               <li v-if="isAuthenticated">
-                <router-link to="/orders" class="dropdown-item">Mina beställningar</router-link>
+                <router-link to="/orders" class="dropdown-item">My orders</router-link>
               </li>
               <li v-if="isAuthenticated">
-                <router-link to="/profile" class="dropdown-item">Mina uppgifter</router-link>
+                <router-link to="/profile" class="dropdown-item">My Profile</router-link>
               </li>
               <li v-if="isAuthenticated && isAdmin">
                 <router-link to="/admin" class="dropdown-item">Admin</router-link>
               </li>
               <li v-if="isAuthenticated">
-                <a class="dropdown-item" @click="handleLogout">Logga ut</a>
+                <a class="dropdown-item" @click="handleLogout">Log out</a>
               </li>
             </ul>
           </li>
@@ -114,7 +112,7 @@
             </button>
             <div v-if="isCartDropdownVisible" class="cart-dropdown">
               <div v-if="cart.length === 0" class="empty-cart"> 
-                Din varukorg är tom.
+                Your cart is empty.
               </div>
               <div class="cart-container" v-else>
                 <div class="cart-item" v-for="item in cart" :key="item.id">
@@ -144,14 +142,14 @@
                   <button class="btn-remove" @click="removeProductFromCart(item.id)">X</button>
                     </div>
                     <div>
-                    <p v-if="item.quantity >= item.stockQuantity" class="error-message"> Det finns inte tillräckligt i lager för att lägga till fler.</p>
+                    <p v-if="item.quantity >= item.stockQuantity" class="error-message"> There is not enough in stock to add more..</p>
                     <!-- <p class="total-text"> Total för denna produkt: {{ totalPriceForProduct(item) }} kr</p> -->
                   </div>
                   </div>
                 </div>
                 <div class="cart-summary">
-                      <h2>Totalt: {{ cartTotal }}</h2>
-                      <button class="cart-btn" @click="goToCart()">Till varukorgen</button>
+                      <h2>Total: {{ cartTotal }}</h2>
+                      <button class="cart-btn" @click="goToCart()">To cart</button>
                     </div>
               </div>
             </div>

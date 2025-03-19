@@ -1,71 +1,114 @@
 <template>
-    <div>
-      <h1>Betalning</h1>
-      <div v-if="isLoading">Laddar...</div>
-      <div v-if="error">{{ error }}</div>
-      
-      <button @click="startPayment" :disabled="isLoading">Starta betalning</button>
-      <!-- Lägg till Stripe Element här för att slutföra betalningen -->
-    </div>
-  </template>
-  
-  <script>
-  import { mapActions, mapGetters } from 'vuex'; // Importera mapGetters och mapActions från Vuex
-  
-  export default {
-    data() {
-      return {
-        orderId: 123, // Ersätt med din faktiska order ID
-        paymentMethod: 'card',  // T.ex. 'card' som betalningsmetod
-      };
-    },
-    computed: {
-      ...mapGetters('payment', ['clientSecret', 'paymentStatus', 'error', 'isLoading']), // Hämta från Vuex
-    },
-    methods: {
-      ...mapActions('payment', ['createPayment', 'confirmOrder']), // Använd actions från Vuex
-  
-      async startPayment() {
-        try {
-          // Förbered data för betalningen
-          const paymentData = {
-            orderId: this.orderId,
-            paymentMethod: this.paymentMethod,
-          };
-  
-          // Anropa Vuex-action för att skapa betalningen och få clientSecret
-          const clientSecret = await this.createPayment(paymentData);
-          
-          console.log('Client Secret:', clientSecret);
-          
-          // Här kan du använda Stripe.js eller annan betalningsteknik för att fullfölja betalningen
-          // När betalningen är slutförd, kan du bekräfta ordern
-          // Exempel: this.proceedToPayment(clientSecret);
-          
-        } catch (error) {
-          console.error('Fel vid skapandet av betalning:', error);
-        }
+  <div>
+    <h1>Payment Page</h1>
+    <form @submit.prevent="handlePayment">
+      <div>
+        <label for="cardNumber">Card Number</label>
+        <input v-model="cardDetails.cardNumber" type="text" id="cardNumber" required />
+      </div>
+      <div>
+        <label for="cardExpiry">Expiration Date</label>
+        <input v-model="cardDetails.cardExpiry" type="text" id="cardExpiry" required />
+      </div>
+      <div>
+        <label for="cardCvc">CVC</label>
+        <input v-model="cardDetails.cardCvc" type="text" id="cardCvc" required />
+      </div>
+      <button type="submit" :disabled="isLoading">Pay</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import { mapState, mapActions } from 'vuex';  // Importera mapState och mapActions för att använda Vuex store
+
+
+export default {
+  data() {
+    return {
+      orderId: '',  // Hämta orderId från router params
+      cardDetails: {
+        cardNumber: '',
+        cardExpiry: '',
+        cardCvc: ''
       },
-  
-      async confirmOrderPayment() {
-        try {
-          // Bekräfta ordern via Vuex
-          const confirmationData = {
-            paymentStatus: 'succeeded', // Status från Stripe eller annan betalningstjänst
-          };
-          
-          const confirmationResponse = await this.confirmOrder({
-            orderId: this.orderId,
-            confirmationData: confirmationData,
-          });
-  
-          console.log('Order bekräftad:', confirmationResponse);
-          // Omdirigera till t.ex. orderbekräftelsesidan eller visa meddelande
-        } catch (error) {
-          console.error('Fel vid orderbekräftelse:', error);
-        }
-      },
-    },
-  };
-  </script>
-  
+      amount: 500.00,  // Exempelbelopp
+      currency: 'sek',  // Valuta
+      description: 'Payment for order #123',  // Beskrivning av betalningen
+    };
+  },
+  computed: {
+    ...mapState('payment', ['isLoading', 'useFakePayment', 'error']),  // Använd Vuex state för att få isLoading och useFakePayment
+  },
+  mounted() {
+    this.orderId = this.$route.params.orderId;  
+    console.log('Order ID från ruttparametrar:', this.orderId);
+  if (!this.orderId) {
+    console.error('Order ID saknas i URL');
+  }
+  },
+  methods: {
+    ...mapActions('payment', ['createPayment', 'confirmOrder']),  // Använd Vuex actions för createPayment och confirmOrder
+
+    async handlePayment() {
+  try {
+    this.isLoading = true;
+
+    // Förbered data för betalningen
+    const paymentData = {
+      orderId: this.orderId,
+      paymentMethod: 'card',  // Betalningsmetod
+      amount: this.amount,  // Beloppet
+      currency: this.currency,  // Valuta
+      description: this.description,  // Beskrivning
+    };
+
+    // Skapa betalningen via Vuex store och spara clientSecret
+    const clientSecret = await this.createPayment(paymentData);
+
+    // Nu kan du använda clientSecret för att skicka den till en betalningstjänst som Stripe
+    console.log('Client Secret:', clientSecret);
+
+    // Bekräfta betalningen (simulerar lyckad betalning)
+    const confirmationData = { paymentStatus: 'succeeded' };  // Simulera lyckad betalning
+    await this.confirmOrder({ orderId: this.orderId, confirmationData });
+
+    // Visa framgångsmeddelande
+    alert('Payment successful and order confirmed!');
+    
+    // Omdirigera till orderbekräftelsesidan
+    this.$router.push({ name: 'OrderConfirmation', params: { orderId: this.orderId } });
+  } catch (error) {
+    console.error('Error handling payment:', error);
+    alert('Error handling payment: ' + error.message);
+  } 
+},
+
+  },
+};
+</script>
+
+<style scoped>
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: auto;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+form input {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+</style>

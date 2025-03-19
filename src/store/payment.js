@@ -1,4 +1,4 @@
-import { createPayment, confirmOrder} from '@/api/payment';
+import { createFakePayment, confirmOrder } from '@/api/payment';
 
 export default {
   namespaced: true,
@@ -7,6 +7,7 @@ export default {
     paymentStatus: null,
     error: null,
     loading: false,
+    useFakePayment: false,
   },
   getters: {
     clientSecret(state) {
@@ -35,21 +36,30 @@ export default {
     setLoading(state, loading) {
       state.loading = loading;
     },
+    setUseFakePayment(state, useFakePayment) {
+      state.useFakePayment = useFakePayment;
+    },
   },
   actions: {
-    async createPayment({ commit }, paymentData) {
+    async createPayment({ commit, state }, paymentData) {
       commit('setLoading', true);
       try {
-        const clientSecret = await createPayment(paymentData); // Anropa API-funktionen för att skapa betalningen
-        commit('setClientSecret', clientSecret); // Sätt clientSecret i Vuex
+        // Om fejkbetalning används, anropa createFakePayment
+        let clientSecret;
+        if (state.useFakePayment) {
+          clientSecret = await createFakePayment(paymentData);
+        }
+
+        commit('setClientSecret', clientSecret);
         commit('setLoading', false);
-        return clientSecret; // Returnera clientSecret till komponenten
+        return clientSecret;
       } catch (error) {
         commit('setLoading', false);
-        commit('setError', error.message); // Hantera fel
-        throw error; // Skicka vidare felet till komponenten för vidare hantering
+        commit('setError', error.message);
+        throw error; // Skicka vidare felet för vidare hantering
       }
     },
+
     async confirmOrder({ commit }, { orderId, confirmationData }) {
       commit('setLoading', true);
       try {
@@ -60,7 +70,7 @@ export default {
       } catch (error) {
         commit('setLoading', false);
         commit('setError', error.message); // Hantera fel
-        throw error; // Skicka vidare felet till komponenten för vidare hantering
+        throw error; // Skicka vidare felet för vidare hantering
       }
     },
   },

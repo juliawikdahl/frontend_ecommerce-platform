@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>Välkommen till inloggningssidan</h1>
+      <h1>Welcome to login</h1>
       <LoginForm />
     </div>
   </template>

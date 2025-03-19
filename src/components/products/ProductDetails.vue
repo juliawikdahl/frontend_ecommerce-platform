@@ -33,9 +33,9 @@
           <WishlistButton :productId="product.id" />
         </div>
         <div class="about-us-info">
-          <p class="info-row">Gratis leverans till Sverige inom 1-3 arbetsdagar*</p>
-          <p class="info-row">Gratis klimatkompenserade leveranser</p>
-          <p class="info-row">Läs mer om vår returpolicy och våra avgifter</p>
+          <p class="info-row">Free delivery to Sweden within 1-3 working days*</p>
+          <p class="info-row">Free climate-compensated deliveries</p>
+          <p class="info-row">Read more about our return policy and fees</p>
         </div>
 
         <div class="reviews-section">
@@ -115,7 +115,7 @@
 
     <!-- Visa meddelande om ingen produkt finns -->
     <div v-else class="no-product-message">
-      <p>Ingen produktdata tillgänglig.</p>
+      <p>No product data available.</p>
     </div>
   </div>
 </template>

@@ -2,7 +2,7 @@
     <div v-if="editableUser"  >
     <form @submit.prevent="saveProfile" class="profile-form container">
         <div>  
-        <h1>{{ editableUser.name }}'s Profil</h1>
+        <h1>{{ editableUser.name }}'s Profile</h1>
         <div>
             <div>
           <label for="email">Email:</label>
@@ -14,50 +14,50 @@
             class="readonly-input"
           />
         </div>
-        <label for="name">Namn:</label>
+        <label for="name">Name:</label>
         <input id="name" v-model="editableUser.name" type="text" required @blur="validateName" />
         <p v-if="nameError" class="error">{{ nameError }}</p>
       </div>
         <div>
-        <label for="address">Adress:</label>
+        <label for="address">Address:</label>
         <input id="address" v-model="editableUser.address" type="text" />
       </div>
       <div>
-        <label for="mobile">Mobil:</label>
+        <label for="mobile">Mobile:</label>
         <input id="mobile" v-model="editableUser.mobile" type="text" pattern="^[0-9]{10}$" />
       </div>
       <div class="location-inputs">
           <div>
-            <label for="city">Stad:</label>
+            <label for="city">City:</label>
             <input id="city" v-model="editableUser.city" type="text" />
           </div>
 
           <div>
-            <label for="zipcode">Postnummer:</label>
+            <label for="zipcode">Zipcode:</label>
             <input id="zipcode" v-model="editableUser.zipcode" type="text" pattern="^[0-9]{5}$" />
           </div>
         </div>
     
-      <p @click="showChangePassword = true"  class="link-text"> Vill du byta lösenord?</p>
+      <p @click="togglePasswordForm"  class="link-text"> Want to change password?</p>
       <div v-if="showChangePassword">
           <div class="password-container">
-            <label for="oldPassword">Gamla lösenordet:</label>
+            <label for="oldPassword">Old password:</label>
             <input id="oldPassword" v-model="passwordData.oldPassword" :type="showOldPassword ? 'text' : 'password'" required  />
             <span
         class="toggle-password-icon"
         @click="toggleShowPassword('old')"
-        :aria-label="showOldPassword ? 'Dölj lösenord' : 'Visa lösenord'"
+        :aria-label="showOldPassword ? 'Hide password' : 'Show password'"
       >
         <i :class="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </span>
         </div>
           <div class="password-container">
-            <label for="newPassword">Nya lösenordet:</label>
+            <label for="newPassword">New Password:</label>
             <input id="newPassword" v-model="passwordData.newPassword" :type="showOldPassword ? 'text' : 'password'" required />
             <span
         class="toggle-password-icon"
         @click="toggleShowPassword('new')"
-        :aria-label="showOldPassword ? 'Dölj lösenord' : 'Visa lösenord'"
+        :aria-label="showOldPassword ? 'Hide password' : 'Show password'"
       >
         <i :class="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
       </span>
@@ -67,7 +67,7 @@
 
         <p v-if="saveError" class="error">{{ saveError }}</p>
         <p v-if="saveSuccess" class="success">{{ saveSuccess }}!</p>  
-      <button type="submit" :disabled="nameError">Spara</button>
+      <button type="submit" :disabled="nameError">Save</button>
       </div>
     </form>
 </div> 
@@ -141,6 +141,9 @@
             } else {
                 this.nameError = null;
             }
+        },
+        togglePasswordForm() {
+          this.showChangePassword = !this.showChangePassword
         },
         toggleShowPassword(type) {
             if (type === 'old') {

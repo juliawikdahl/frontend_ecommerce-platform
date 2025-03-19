@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-    <div v-if="products.length === 0" class="no-products">Inga produkter tillgängliga.</div>
+    <div v-if="products.length === 0" class="no-products">There's no products in this category.</div>
 
     <div class="products-grid">
       <div class="product-card" v-for="product in localProducts" :key="product.id">
@@ -32,26 +32,26 @@
     <!-- Redigeringsmodal -->
     <div v-if="showEditModal" class="modal-overlay">
       <div class="modal">
-        <h2>Redigera produkt</h2>
+        <h2>Edit product</h2>
         <form @submit.prevent="putProduct(editedProduct.id)">
-          <label for="editName">Namn</label>
+          <label for="editName">Name</label>
           <input type="text" id="editName" v-model="editedProduct.name" required />
 
-          <label for="product-description">Beskrivning</label>
+          <label for="product-description">Description</label>
           <textarea v-model="editedProduct.description" id="product-description"></textarea>
           <div class="form-row">
               <div class="form-group">
-                <label for="editPrice">Pris</label>
+                <label for="editPrice">Price</label>
                 <input type="number" id="editPrice" v-model="editedProduct.price" required />
               </div>
               <div class="form-group">
-                <label for="editStock">Lagerantal</label>
+                <label for="editStock">Stock Quantity</label>
                 <input type="number" id="editStock" v-model="editedProduct.stockQuantity" required />
               </div>
           </div>
           <div class="form-row">
           <div class="form-group">
-              <label for="category-select">Kategori</label>
+              <label for="category-select">Category</label>
               <select v-model="editedProduct.categoryId" @change="onCategoryChange">
                 <option v-for="category in categories" :key="category.id" :value="category.id">
                   {{ category.name }}
@@ -59,7 +59,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="subcategory-select">Subkategori</label>
+              <label for="subcategory-select">Subcategory</label>
               <select v-model="editedProduct.subCategoryId"  required>
                 <option v-for="sub in subcategories" :key="sub.id" :value="sub.id">
                   {{ sub.name }}
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="product-image">Produktbild</label>
+            <label for="product-image">Product Image</label>
             <!-- Om det finns en bild, visa den som förhandsvisning -->
             <div v-if="editedProduct.encodedImage">
               <img  :src="getImageSource(editedProduct)" alt="Current image" class="image-preview" />
@@ -76,8 +76,8 @@
             <input type="file" id="product-image" @change="handleImageChange" />
           </div>
 
-          <button type="submit">Spara ändringar</button>
-          <button type="button" class="cancel-button" @click="closeEditModal">Avbryt</button>
+          <button type="submit">Save Changes</button>
+          <button type="button" class="cancel-button" @click="closeEditModal">Cancel</button>
         </form>
       </div>
     </div>
@@ -264,6 +264,9 @@ export default {
   transition: background 0.3s ease;
 }
 
+.edit-button:hover {
+  background: green;
+}
 
 
 

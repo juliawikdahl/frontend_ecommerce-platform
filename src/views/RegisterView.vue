@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>Välkommen till registreringssidan</h1>
+      <h1>Welcome to register</h1>
       <RegisterForm />
     </div>
   </template>

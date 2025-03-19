@@ -1,8 +1,8 @@
 <template>
-     <h1>Din varukorg</h1>
+     <h1>Your cart</h1>
     <div class="cart container">
       <div v-if="cart.length === 0" class="empty-cart">
-        Din varukorg är tom.
+        Your cart is empty.
       </div>
       <div class="cart-container" v-else>
         <div class="cart-item" v-for="item in cart" :key="item.id">
@@ -20,15 +20,15 @@
               <button class="btn-quantity" @click="updateQuantity(item.id, item.quantity + 1)" :disabled="item.quantity >= item.stockQuantity">+</button>
             </div>
             <p v-if="item.quantity >= item.stockQuantity" class="error-message">
-            Det finns inte tillräckligt i lager för att lägga till fler.
+            There is not enough in stock to add more..
           </p>
-            <p class="total-text" >Total för denna produkt: {{ totalPriceForProduct(item) }} kr</p> 
+            <p class="total-text" >Total for this product: {{ totalPriceForProduct(item) }} kr</p> 
           </div>
           <button class="btn-remove" @click="removeProductFromCart(item.id)">X</button>
         </div>
         <div class="cart-summary">
         <h2>Total: {{ cartTotal }} kr</h2>
-        <button class="checkout-btn" @click="proceedToCheckout">Till kassan</button>
+        <button class="checkout-btn" @click="proceedToCheckout">Go to checkout</button>
       </div>
       </div>
     </div>
@@ -48,6 +48,7 @@ import { mapActions, mapGetters } from 'vuex';
     },
     mounted() {
     this.$store.dispatch('loadCart');
+    
     },
     methods: {
       ...mapActions(['updateProductQuantity', 'removeProduct']),
@@ -73,29 +74,35 @@ import { mapActions, mapGetters } from 'vuex';
         return item.price * item.quantity;
     },
 
-    async proceedToCheckout() {
-      // Skapa order
-      const orderData = {
-        orderItems: this.cart.map(item => ({
-          productId: item.id,
-          quantity: item.quantity,
-        })),
-      };
+  // Skapa order
+  async proceedToCheckout() {
+  const orderData = {
+    orderItems: this.cart.map(item => ({
+      productId: item.id,
+      quantity: item.quantity,
+    })),
+  };
 
-      try {
-        const response = await this.$store.dispatch('orders/createOrder', orderData);
+  try {
+    console.log("Skickar orderdata till servern:", orderData);
+    const response = await this.$store.dispatch('orders/createOrder', orderData);
+    
+    // Logga svaret för att verifiera dess innehåll
+    console.log('Full serverresponse:', response);
+    
+    if (response && response.orderId) {
+      this.orderId = response.orderId;
+      console.log('Order ID:', this.orderId);
+      this.$router.push({ name: 'PaymentView', params: { orderId: this.orderId } });
+    } else {
+      console.error('Order ID was not returned from server');
+    }
+  } catch (error) {
+    console.error('Error during order creation:', error);
+  }
+}
 
-        // Om ordern skapades, omdirigera till betalning
-        if (response && response.message === "Order created successfully. Please complete the payment to confirm the order.") {
-          this.$router.push({ name: 'PaymentView' }); // Omdirigera till betalning
-        } else {
-          console.error('Order creation failed:', response);
-        }
-      } catch (error) {
-        console.error('Error during order creation:', error);
-      }
-    },
-  },
+    }
    
   };
   </script>

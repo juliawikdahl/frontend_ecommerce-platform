@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-4">
         <h1>{{ subCategoryName }}</h1>
-      <div v-if="loading" class="spinner">Laddar...</div>
+      <div v-if="loading" class="spinner">Loading...</div>
       <div v-else> <AllProductsList :products="products" />
       </div>
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
@@ -32,10 +32,9 @@
       try {
         const data = await getProductBySubCategory(this.subCategoryId);
         this.products = data || [];
-        this.subCategoryName = data[0]?.subCategoryName || 'Okänd subkategori';
+        this.subCategoryName = data[0]?.subCategoryName || 'Unknown Subcategory';
         this.loading = false;
       } catch (error) {
-        this.errorMessage = 'Något gick fel vid hämtning av produkter för denna kategori.';
         console.error(error);
         this.loading = false;
       }
@@ -46,7 +45,7 @@
     if (this.subCategoryId) {
       this.fetchSubCategoryProducts();  
     } else {
-      this.errorMessage = 'Ingen kategori vald.';
+      this.errorMessage = 'No subcategory chosen';
       this.loading = false;
     }
   },

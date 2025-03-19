@@ -4,164 +4,25 @@
       <div>
         <button @click="setActiveForm('product')">Add product</button>
         <button @click="setActiveForm('category')">Add Category</button>
-        <button @click="setActiveForm('subcategory')">Add SubCategory</button>
-        <button @click="setActiveForm('manage')">Manage Categories</button>
+        <button @click="setActiveForm('subcategory')">Add Subcategory</button>
+        <button @click="setActiveForm('categoryEdit')">Manage Categories</button>
+        <button @click="setActiveForm('orders')">Manage Orders</button>
+
 
       </div>
-      <div v-if="activeForm === 'product'" class="form-container">
-          <form @submit.prevent="submitAddProduct">
-              <h2>Add a New Product</h2>
-              <div class="form-group">
-                  <label for="productName">Product Name</label>
-                  <input type="text" v-model="newProduct.name" id="productName" required/>
-              </div>
-              <div class="form-group">
-                  <label for="productDescription">Product Description</label>
-                  <input type="text" v-model="newProduct.description" id="productDescription" required />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                    <label for="productPrice">Price</label>
-                    <input type="number" v-model="newProduct.price" id="productPrice" required />
-                </div>
-                
-                <div class="form-group">
-                    <label for="productStockQuantity">Stock Quantity</label>
-                    <input type="number" v-model="newProduct.stockQuantity" id="productStockQuantity" required />
-                </div>
-            </div>
-            <div class="form-row">
-          <div class="form-group">
-              <label for="productCategory">Category</label>
-              <select v-model="newProduct.categoryId" id="productCategory" required @change="onCategoryChange">
-                  <option v-for="category in categories" :key="category.id" :value="category.id">
-                      {{ category.name }}
-                  </option>
-              </select>   
-          </div>
 
-          <div class="form-group">
-              <label for="productSubcategory">SubCategory</label>
-              <select v-model="newProduct.subCategoryId" id="productSubcategory" required>
-                  <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.id">
-                      {{ subcategory.name }}
-                  </option>
-              </select>
-          </div>
-      </div>
-              <div class="form-group">
-                  <label for="productImage">Product Image</label>
-                  <input type="file" @change="handleImageUpload" />
-              </div>
-              <div class="form-group">
-                  <button type="submit">Add product</button>
-              </div>
-          </form>
-      </div>
-    
-      <div v-if="activeForm === 'category'" class="form-container">
-          <form @submit.prevent="submitAddCategory">
-              <h2>Add a New Category</h2>
-              <div class="form-group">
-                  <label for="categoryName">Category Name</label>
-                  <input type="text" v-model="newCategory.name" id="categoryName" required />
-              </div>
-              <div class="form-group">
-                  <button type="submit">Add Category</button>
-              </div>
-          </form>
-      </div>
+      <ProductForm v-if="activeForm === 'product'"  />
   
-      <div v-if="activeForm === 'subcategory'" class="form-container">
-          <form @submit.prevent="submitAddSubCategory">
-              <h2>Add a New SubCategory</h2>
-              <div class="form-group">
-                  <label for="subcategoryName">SubCategory Name</label>
-                  <input type="text" v-model="newSubCategory.name" id="subcategoryName" required />
-              </div>
-              <div class="form-group">
-                  <label for="subcategoryCategory">Category</label>
-                  <select v-model="newSubCategory.categoryId" id="subcategoryCategory" required>
-                      <option v-for="category in categories" :key="category.id" :value="category.id">
-                          {{ category.name }}
-                      </option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <button type="submit">Add SubCategory</button>
-              </div>
-          </form>
-      </div>
+      <CategoryForm v-if="activeForm === 'category'"  />
+  
+      <SubCategoryForm v-if="activeForm === 'subcategory'"  />
+  
+      <CategoryManagement v-if="activeForm === 'categoryEdit'" />
+
+      <OrderManagement v-if="activeForm === 'orders'" />
 
 
-<div v-if="activeForm === 'manage'">
-  <h2 class="categories-title">Categories and Sub Categories</h2>
 
-  <div id="manageCategories">
-    <div v-for="category in categories" :key="category.id" class="category-container">
-    <!-- Kategorinamn och actions för redigering och borttagning -->
-    <div class="category-header">
-      <h3 class="category-title">{{ category.name }}</h3>
-      <div class="category-actions">
-        <button @click="toggleEditCategoryForm(category)" class="edit-button"><i class="fa-solid fa-edit"></i></button>
-        <button @click="deleteCategory(category.id)" class="delete-button"> <i class="fa-solid fa-trash"></i></button>
-      </div>
-    </div>
-
-    <!-- Subkategorier under varje kategori -->
-    <div class="subcategory-container">
-      <div v-for="subcategory in category.subCategories" :key="subcategory.id" class="subcategory">
-        <span>{{ subcategory.name }}</span>
-        <div class="subcategory-actions">
-          <button @click="toggleEditSubCategoryForm(subcategory)" class="edit-button"> <i class="fa-solid fa-edit"></i></button>
-          <button @click="deleteSubCategory(subcategory.id)" class="delete-button"> <i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Redigera kategori -->
-  <div v-if="isEditing" class="modal-overlay" @click="cancelEditCategory">
-    <div class="modal-content" @click.stop>
-      <h3>Redigera kategori</h3>
-      <form @submit.prevent="submitEditCategory">
-        <div class="form-group">
-          <label for="editCategoryName">Kategorinamn</label>
-          <input type="text" v-model="editingCategory.name" id="editCategoryName" required />
-        </div>
-        <button type="submit">Uppdatera kategori</button>
-        <button type="button" @click="cancelEditCategory">Avbryt</button>
-      </form>
-    </div>
-  </div>
-
-
-  <!-- Redigera subkategori -->
-  <div v-if="isEditingSubCategory" class="modal-overlay" @click="cancelEditSubCategory">
-    <div class="modal-content" @click.stop>
-      <h3>Redigera Subkategori</h3>
-      <form @submit.prevent="submitEditSubCategory">
-        <div class="form-group">
-          <label for="editSubCategoryName">Subkategori Namn</label>
-          <input type="text" v-model="editingSubCategory.name" id="editSubCategoryName" required />
-        </div>
-        <div class="form-group">
-          <label for="editCategory">Kategori</label>
-          <select v-model="editingSubCategory.categoryId" id="editCategory" required>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-              {{ category.name }}
-            </option>
-          </select>
-        </div>
-        <button type="submit">Uppdatera Subkategori</button>
-        <button type="button" @click="cancelEditSubCategory">Avbryt</button>
-      </form>
-    </div>
-  </div>
-  </div>
-
- 
-</div>
     
 
 
@@ -209,42 +70,30 @@
   </template>
   
   <script>
-  import { addProduct } from '@/api/products';
+
   import { mapActions, mapGetters } from "vuex";
   import AllProductsList from '@/components/products/AllProductsList.vue';
 import SortByDropdown from '@/components/products/SortByDropdown.vue';
+import ProductForm from '@/components/products/ProductForm.vue';
+import CategoryForm from '@/components/categories/CategoryForm.vue';
+import SubCategoryForm from '@/components/categories/SubCategoryForm.vue';
+import CategoryManagement from '@/components/categories/CategoryManagement.vue';
+import OrderManagement from '@/components/orders/OrderManagement.vue'; // Importera OrderManagement-komponenten
+
   
   export default {
     components: {
       AllProductsList,
-      SortByDropdown
+      SortByDropdown,
+      OrderManagement,
+      CategoryManagement,
+      SubCategoryForm,
+      CategoryForm,
+      ProductForm
     },
     data() {
       return {
         activeForm: null,
-        showEditCategoryForm: false,
-        isEditing: false, 
-        isEditingSubCategory: false,
-        newProduct: {
-          id: 0,
-          name: "",
-          description: "",
-          price: 0,
-          stockQuantity: 0,
-          subCategoryId: 0,
-          subCategoryName: "",
-          categoryId: 0,
-          categoryName: "",
-          encodedImage: "" 
-        },
-        subcategories: [],
-        newCategory: {
-          name: "",
-        },
-        newSubCategory: {
-          name: "",
-          categoryId: null
-        },
         selectedCategory: '',
         selectedSubCategory: '',
         filteredProducts: [],
@@ -259,6 +108,7 @@ import SortByDropdown from '@/components/products/SortByDropdown.vue';
     computed: {
       ...mapGetters('products', ['allProducts']),
       ...mapGetters('categories', ['categories']), // här hämtas kategorierna ifrån vuex
+    
     },
 
     // förstår inte varför jag måste köra loadallproducts, borde gå att bara hämta via products som det går med category
@@ -273,246 +123,29 @@ import SortByDropdown from '@/components/products/SortByDropdown.vue';
             this.sortProducts();
           }
         });
+   
       } catch (error) {
         this.errorMessage = "Kunde inte hämta produkter.";
       } finally {
         this.loading = false;
       }
    },
+
    
     methods: {
       ...mapActions('products', ['loadAllProducts']),
       ...mapActions('categories', ['addCategory', 'addSubCategory']),
-
-
+     
+     
       setActiveForm(form) {
         this.activeForm = this.activeForm === form ? null : form; // Om samma knapp trycks igen döljs formuläret
       },
 
       toggleSortDropdown() {
-      // Växla öppning och stängning av dropdown
+      
       this.isDropdownOpen = !this.isDropdownOpen;
     },
-     // Den första raden söker igenom listan av categories (som hämtas från Vuex) 
-     // och hittar den kategori vars id matchar den categoryId som är kopplad till den nya produkten (this.newProduct.categoryId)
-     // Om en kategori med motsvarande ID finns, kommer den att lagras i variabeln selectedCategory
-     // sedan kontrolleras om selectedCategory existerar och om den har en egenskap subCategories som är en array
-     // om så är fallet går vi vidare och uppdaterar listan med underkatergorier,  this.subcategories uppdateras till 
-     // att innehålla alla underkategorier från den valda kategorin (selectedCategory.subCategories
-     // this.newProduct.categoryName sätts till namnet på den valda kategorin (selectedCategory.name).
-      onCategoryChange() {
-        const selectedCategory = this.categories.find(cat => cat.id === this.newProduct.categoryId);
-        if (selectedCategory && Array.isArray(selectedCategory.subCategories)) {
-          this.subcategories = [...selectedCategory.subCategories];
-          this.newProduct.categoryName = selectedCategory.name;
-         
-        } else {
-          this.subcategories = [];
-          this.newProduct.categoryName = "";
-        }
-      },
-  
-      handleImageUpload(event) {
-        const file = event.target.files[0];  // Hämtar den första filen användaren valde
-        if (file) {
-          const reader = new FileReader(); // Skapar en FileReader för att läsa filen (JavaScript-objekt )
-          reader.onload = () => {
-            this.newProduct.encodedImage = reader.result.split(',')[1]; // Omvandlar filen till base64 och lagrar den i produktens data
-            console.log("Base64 Image:", this.newProduct.encodedImage); // .split(',') delar upp strängen vid kommatecknet hämtar den andra delen av den uppdelade strängen, det vill säga den faktiska base64-kodade bilddatan, eftersom den andra delen (index 1) innehåller själva bildinnehållet i base64-format.
-          };
-          reader.onerror = (error) => {
-            console.error("Error reading image file:", error);
-          };
-          reader.readAsDataURL(file); // Läser filen som en data-URL (base64-kodad sträng)
-        }
-      },
-
-      // vi behöver hämta namnet på subcategorin eftersom vi bara binder subcategoryid, 
-      // vi behöver inte göra det på categorys för vi binder namnet på category i categoryonchange metoden istället
-      async submitAddProduct() {
-        try {
-          const productData = {
-            id: this.newProduct.id,
-            name: this.newProduct.name,
-            description: this.newProduct.description,
-            price: this.newProduct.price,
-            stockQuantity: this.newProduct.stockQuantity,
-            subCategoryId: this.newProduct.subCategoryId,
-            subCategoryName: this.subcategories.find(sub => sub.id === this.newProduct.subCategoryId)?.name || "",
-            categoryId: this.newProduct.categoryId,
-            categoryName: this.newProduct.categoryName,
-            encodedImage: this.newProduct.encodedImage
-          };
-          
-          const createdProduct = await addProduct(productData);
-          console.log('Product added:', createdProduct);
-          this.newProduct = {}; 
-        } catch (error) {
-          console.error('Error adding product:', error);
-          alert('Failed to add product. Please check the form and try again.');
-        }
-      },
-  
-      async submitAddCategory() {
-        try {
-          if (!this.newCategory.name) {
-            alert("Please enter a category name.");
-            return;
-          }
-            
-          const categoryData = {
-            name: this.newCategory.name,
-          };
-  
-          await this.$store.dispatch('categories/addCategory', categoryData);
-          console.log('Category added successfully:', categoryData);
-          this.newCategory.name = "";
-          alert("Category added successfully!");
-        } catch (error) {
-            console.error('Error adding category:', error);
-            alert('Failed to add category. Please try again.');
-        }
-      },
-
-      async submitAddSubCategory() {
-        try {
-          if (!this.newSubCategory.name || !this.newSubCategory.categoryId) {
-            alert("Please provide both a name and a category for the subcategory.");
-            return;
-          }
-  
-          const subCategoryData = {
-            name: this.newSubCategory.name,
-            categoryId: this.newSubCategory.categoryId,
-          };
-  
-          console.log('SubCategory data from:', subCategoryData); 
-  
-          await this.$store.dispatch('categories/addSubCategory', subCategoryData );
-  
-          this.newSubCategory.name = "";
-          this.newSubCategory.categoryId = null;
-          this.showAddSubCategoryForm = false;
-          alert("SubCategory added successfully!");
-        } catch (error) {
-          console.error("Failed to add subcategory:", error);
-          alert("Failed to add subcategory. Please try again.");
-        }
-      },
-
-      toggleEditCategoryForm(category) {
-        this.editingCategory = { ...category }; // Kopiera kategorin
-        this.isEditing = true; // Sätt redigeringsformuläret till "true"
-    },
-    cancelEditCategory() {
-    this.isEditing = false; // Stänger redigeringsmodalen för kategori
-    this.editingCategory = {}; // Återställ den redigerade kategorin till ett tomt objekt (om du vill)
-  },
-
-    async submitEditCategory() {
-  try {
-    // Skapa objektet som ska skickas
-    const updatedCategory = {
-      id: this.editingCategory.id,
-      name: this.editingCategory.name
-    };
-
-    // Uppdatera kategori via Vuex och få svar från servern
-    const response = await this.$store.dispatch('categories/updateCategory', updatedCategory);
-
-    // Kontrollera om uppdateringen var framgångsrik
-    if (response.success) {
-      this.successMessage = "Kategori uppdaterad!";  // Sätt framgångsmeddelande
-      this.errorMessage = '';  // Rensa felmeddelande om uppdateringen lyckades
-      this.isEditing = false;
-    } else {
-      this.successMessage = '';  // Rensa framgångsmeddelande om uppdateringen misslyckades
-      this.errorMessage = "Fel vid uppdatering av kategori. Försök igen.";  // Sätt felmeddelande
-    }
-
-  } catch (error) {
-    console.error("Fel vid uppdatering av kategori:", error);
-    this.successMessage = '';  // Rensa framgångsmeddelande om ett fel inträffade
-    this.errorMessage = "Fel vid uppdatering av kategori. Försök igen.";  // Sätt felmeddelande
-  }
-},
-
-toggleEditSubCategoryForm(subcategory) {
-      this.editingSubCategory = { ...subcategory }; // Copy the subcategory data for editing
-      this.isEditingSubCategory = true; // Show the editing form
-    },
-
-   cancelEditSubCategory() {
-    this.isEditingSubCategory = false; // Stänger redigeringsmodalen för subkategori
-    this.editingSubCategory = {}; // Återställ den redigerade subkategorin till ett tomt objekt (om du vill)
-  },
-
-
-    async submitEditSubCategory() {
-  try {
-    // Logga data som skickas
-    console.log('Submitting subcategory update with data:', this.editingSubCategory);
-
-    // Uppdatera subkategori data via Vuex eller API
-    const updatedSubCategory = {
-      id: this.editingSubCategory.id,
-      name: this.editingSubCategory.name,
-      categoryId: this.editingSubCategory.categoryId
-    };
-
-    // Logga uppdaterad subkategori
-    console.log('Updated subcategory object:', updatedSubCategory);
-
-    // Skicka uppdaterad subkategori till Vuex action
-    console.log('Dispatching updateSubCategory action...');
-    await this.$store.dispatch('categories/updateSubCategory', updatedSubCategory);
-
-    // Logga framgång
-    console.log('Subcategory update successful');
-
-    // Visa framgångsmeddelande och dölja redigeringsformulär
-    this.successMessage = "SubCategory updated successfully!";
-    this.errorMessage = ''; // Rensa felmeddelande vid framgång
-    this.isEditingSubCategory = false; // Dölj redigeringsformuläret
-    this.editingSubCategory = null; // Återställ redigeringsdata
-  } catch (error) {
-    // Logga fel vid uppdatering
-    console.error("Error updating subcategory:", error);
-
-    // Rensa framgångsmeddelande och visa felmeddelande
-    this.successMessage = ''; // Rensa framgångsmeddelande vid fel
-    this.errorMessage = "Error updating subcategory. Please try again.";
-  }
-},
-
-
-async deleteCategory(id) {
-  const confirmed = confirm("Är du säker på att du vill ta bort denna kategori?");
-  if (!confirmed) return; 
-
-  try {
-    await this.$store.dispatch('categories/deleteCategory', id);
-    alert("Kategori borttagen!");
-  } catch (error) {
-    console.error("Error deleting category:", error);
-    alert("Fel vid borttagning av kategori.");
-  }
-},
-
-async deleteSubCategory(id) {
-  const confirmed = confirm("Är du säker på att du vill ta bort denna subkategori?");
-  if (!confirmed) return; // Avbryt om användaren väljer "Avbryt"
-
-  try {
-    await this.$store.dispatch('categories/deleteSubCategory', id);
-    alert("Subkategori borttagen!");
-  } catch (error) {
-    console.error("Error deleting subcategory:", error);
-    alert("Fel vid borttagning av subkategori.");
-  }
-},
-
-
+   
 
       // let filtered = this.allProducts;: Här skapas en kopia av hela produktlistan (this.allProducts) och sparas i variabeln filtered. 
        // Om användaren har valt en kategori filtreras filtered-listan så att den bara innehåller produkter vars categoryId matchar det valda kategori-ID:t.
@@ -523,7 +156,6 @@ async deleteSubCategory(id) {
       // else, om ingen kategori är vald (dvs selectedcategory är null) töms listan över subkategorier eftersom  det inte finns någon kategori att filtrea på
       // om en subkategori är vald (selectedsubcategory) så filtrers produkterna ytterligare för att visa de som har en subcategoryID som matchar den valda kategorin
       //this.filteredProducts = filtered;: Efter att ha filtrerat produkterna baserat på kategori och subkategori, uppdaterar vi listan filteredProducts som används i komponenten för att visa produkterna.
-
     async filterProducts() {
         let filtered = this.allProducts;
 
@@ -660,7 +292,8 @@ async deleteSubCategory(id) {
     color: #444;
   }
   
-  button {
+  
+button {
     margin-right: 10px;
     padding: 10px 15px;
     border-radius: 5px;
@@ -669,129 +302,6 @@ async deleteSubCategory(id) {
     transition: background-color 0.3s ease;
   }
 
-  .form-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-.form-group {
-    flex: 1;
-    min-width: 200px;
-    margin-bottom: 15px;
-  }
-  .form-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-
-  input, select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-top: 5px;
-    
-  }
-  
-  input:focus, select:focus {
-    border-color: #007BFF;
-    outline: none;
-  }
-  
-  #manageCategories {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 20px;
-  padding: 0 20px 20px 20px;
-}
-.categories-title {
-  margin-top: 1.5rem;
-}
-
-
-.category-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-.category-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-.category-title {
-  font-size: 1.5rem;
-  color: #333;
-  border-bottom: 1px solid black;
-}
-
-.subcategory-container {
-  margin-top: 10px;
-  padding-left: 25px; /* Gör så att subkategorierna går inåt */
-}
-
-.subcategory {
-  margin-bottom: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.subcategory span {
-  font-size: 1.1rem;
-  color: #555;
-}
-
-.delete-button {
-background-color: rgb(206, 10, 10);
-transition: background-color 0.3s;
-}
-.delete-button:hover {
-  background-color: rgb(170, 9, 9);
-}
-
-.edit-button {
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
- /* Kategorihantering */
- .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Mörk bakgrund */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Se till att modalens overlay är ovanpå allt annat */
-}
-
-/* Innehåll i modalen */
-.modal-content {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
 
   /* Filter container */
   
@@ -845,17 +355,6 @@ transition: background-color 0.3s;
   @media (max-width: 768px) {
     .admin-portal {
       padding: 10px;
-    }
-
-    .form-container {
-      padding: 15px;
-      margin-top: 15px;
-      max-width: 100%;
-    }
-
-    .form-row {
-      flex-direction: column;
-      gap: 10px;
     }
 
     .filter-container {

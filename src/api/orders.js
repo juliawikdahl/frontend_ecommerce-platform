@@ -73,6 +73,28 @@ export const getOrder = async (orderId) => {
   }
 };
 
+export const getUserOrders = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No authentication token found.');
+      return;
+    }
+
+    const response = await axios.get(`https://localhost:7131/api/Users/orders`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    console.log('Fetched user orders:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    throw error;
+  }
+};
+
 // Funktion för att uppdatera orderstatus
 export const updateOrderStatus = async (orderId, status) => {
   try {
@@ -82,7 +104,7 @@ export const updateOrderStatus = async (orderId, status) => {
       return;
     }
 
-    const response = await axios.put(`${API_URL}/${orderId}/status`, status, {
+    const response = await axios.put(`${API_URL}/${orderId}/status`, {status}, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'

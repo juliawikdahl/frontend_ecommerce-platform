@@ -12,6 +12,9 @@ import ProfileView from '@/views/ProfileView.vue';
 import AdminView from '@/views/AdminView.vue';
 import SearchResultsView from '@/views/SearchResultsView.vue';
 import PaymentView from '@/views/PaymentView.vue';
+import OrderView from '@/views/OrderView.vue';
+import OrderConfirmationView from '@/views/OrderConfirmationView.vue';
+
 import store from '@/store';
 
 const routes = [
@@ -88,9 +91,19 @@ const routes = [
     props: route => ({ query: route.query.query }) // Skicka query-parametern som prop
   },
   {
-    path: '/payment',
+    path: '/payment/:orderId',
     name: 'PaymentView',
     component: PaymentView // Betalningssidan
+  },
+  {
+    path: '/orders',
+    name: 'OrderView',
+    component: OrderView // Betalningssidan
+  },
+  {
+    path: '/order-confirmation/:orderId',
+    name: 'OrderConfirmation',
+    component: OrderConfirmationView,
   },
   // {
   //   path: '/subcategory/:name',  // Dynamisk ruta för subkategorier

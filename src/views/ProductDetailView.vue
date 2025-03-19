@@ -1,6 +1,6 @@
 <template>
     <div class="product-detail-view">
-        <div v-if="loading" class="spinner">Laddar...</div>
+        <div v-if="loading" class="spinner">Loading...</div>
         <div v-else>
             <ProductDetail :product="product" />
         </div>

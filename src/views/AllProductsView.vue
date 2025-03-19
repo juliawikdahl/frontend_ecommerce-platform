@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4">
-    <div v-if="loading" class="spinner">Laddar...</div>
+    <div v-if="loading" class="spinner">Loading...</div>
     <div v-else>
       <h1>All products</h1>
       <AllProductsList :products="allProducts" :isAdmin="false"  />

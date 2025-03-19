@@ -2,7 +2,7 @@
     <div class="sort-container">
       <!-- Sortera med ikon -->
       <button @click="toggleSortDropdown" class="sort-icon-button" aria-label="Sort by">
-        <i class="fa-solid fa-sort"></i>
+         <i class="fa-solid fa-sort"></i> Sort
       </button>
   
       <!-- Dropdown-listan -->

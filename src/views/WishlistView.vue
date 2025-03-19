@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-4">
-      <h1>Din Wishlist</h1>
-      <div v-if="wishlistProducts.length === 0" class="no-products">Din wishlist är tom.</div>
+      <h1>Your wishlist</h1>
+      <div v-if="wishlistProducts.length === 0" class="no-products">Your wishlist is empty.</div>
       <div v-else>
         <AllProductsList :products="wishlistProducts" />
       </div>

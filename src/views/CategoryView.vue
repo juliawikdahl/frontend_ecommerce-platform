@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-4">
     <h1>{{ categoryName }}</h1>
-    <div v-if="loading" class="spinner">Laddar...</div>
+    <div v-if="loading" class="spinner">Loading...</div>
     <div v-else-if="categoryList.length === 0">
-      <p>Det finns inga produkter i den här kategorin.</p>
+      <p>There's no products in this category.</p>
     </div>
     <div v-else>
       <AllProductsList :products="categoryList" />
@@ -27,7 +27,7 @@ export default {
       return this.products.products || [];
     },
     categoryName() {
-      return this.products.categoryName || 'Okänd kategori';
+      return this.products.categoryName || 'Unknown Category';
     },
     loading() {
       return this.products.loading && !this.categoryList.length;

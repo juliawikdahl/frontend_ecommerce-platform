@@ -3,12 +3,12 @@
       <h1>Search Results</h1>
   
       <div v-if="loading" class="loading">
-        Laddar resultat...
+        Loading...
       </div>
   
       <div v-else>
         <div v-if="products.length === 0" class="no-results">
-          <p>Inga produkter hittades för din sökfråga.</p>
+          <p>No product was found, try something else.</p>
         </div>
   
         <!-- Använd AllProductsList för att rendera produkterna -->
