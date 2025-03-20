@@ -7,8 +7,6 @@
         <button @click="setActiveForm('subcategory')">Add Subcategory</button>
         <button @click="setActiveForm('categoryEdit')">Manage Categories</button>
         <button @click="setActiveForm('orders')">Manage Orders</button>
-
-
       </div>
 
       <ProductForm v-if="activeForm === 'product'"  />
@@ -279,7 +277,9 @@ import OrderManagement from '@/components/orders/OrderManagement.vue'; // Import
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
   }
+ 
   
   h1 {
     font-size: 2rem;

@@ -14,6 +14,9 @@ import SearchResultsView from '@/views/SearchResultsView.vue';
 import PaymentView from '@/views/PaymentView.vue';
 import OrderView from '@/views/OrderView.vue';
 import OrderConfirmationView from '@/views/OrderConfirmationView.vue';
+import AboutView from '@/views/AboutView.vue';
+import ContactView from '@/views/ContactView.vue';
+
 
 import store from '@/store';
 
@@ -91,7 +94,7 @@ const routes = [
     props: route => ({ query: route.query.query }) // Skicka query-parametern som prop
   },
   {
-    path: '/payment/:orderId',
+    path: '/payment/:orderId/:totalAmount',
     name: 'PaymentView',
     component: PaymentView // Betalningssidan
   },
@@ -105,6 +108,20 @@ const routes = [
     name: 'OrderConfirmation',
     component: OrderConfirmationView,
   },
+  {
+    path: '/about',
+    name: 'AboutView',
+    component: AboutView,
+    meta: { title: 'About Us' }
+  },
+  {
+    path: '/contact',
+    name: 'ContactView',
+    component: ContactView,
+    meta: { title: 'Contact Us' }
+  },
+
+
   // {
   //   path: '/subcategory/:name',  // Dynamisk ruta för subkategorier
   //   name: 'subcategory',

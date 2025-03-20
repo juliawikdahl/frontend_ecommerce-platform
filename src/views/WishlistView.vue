@@ -78,6 +78,9 @@
   </script>
   
   <style scoped>
+  .container {
+text-align: center;
+  }
   .no-products {
     text-align: center;
     font-size: 18px;

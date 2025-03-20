@@ -15,7 +15,7 @@
            
             <p>{{ item.price }} kr</p>
             <div class="quantity-controls">
-              <button class="btn-quantity" @click="updateQuantity(item.id, item.quantity - 1)" :disabled="item.quantity <= 1">-</button>
+              <button class="btn-quantity" @click="updateQuantity(item.id, item.quantity - 1)">-</button>
               <span class="quantity-number">{{ item.quantity }}</span>
               <button class="btn-quantity" @click="updateQuantity(item.id, item.quantity + 1)" :disabled="item.quantity >= item.stockQuantity">+</button>
             </div>
@@ -24,7 +24,7 @@
           </p>
             <p class="total-text" >Total for this product: {{ totalPriceForProduct(item) }} kr</p> 
           </div>
-          <button class="btn-remove" @click="removeProductFromCart(item.id)">X</button>
+         
         </div>
         <div class="cart-summary">
         <h2>Total: {{ cartTotal }} kr</h2>
@@ -66,10 +66,6 @@ import { mapActions, mapGetters } from 'vuex';
         this.updateProductQuantity({ productId, quantity });
       
     },
-    removeProductFromCart(productId) {
-        console.log("Ta bort produkt med id:", productId);
-        this.removeProduct(productId);
-    },
     totalPriceForProduct(item) {
         return item.price * item.quantity;
     },
@@ -81,6 +77,7 @@ import { mapActions, mapGetters } from 'vuex';
       productId: item.id,
       quantity: item.quantity,
     })),
+    totalAmount: this.cartTotal,
   };
 
   try {
@@ -93,7 +90,7 @@ import { mapActions, mapGetters } from 'vuex';
     if (response && response.orderId) {
       this.orderId = response.orderId;
       console.log('Order ID:', this.orderId);
-      this.$router.push({ name: 'PaymentView', params: { orderId: this.orderId } });
+      this.$router.push({ name: 'PaymentView', params: { orderId: this.orderId, totalAmount: this.cartTotal} });
     } else {
       console.error('Order ID was not returned from server');
     }
@@ -116,6 +113,8 @@ import { mapActions, mapGetters } from 'vuex';
   }
   .cart-container {
    width: 80%;
+   
+   
   }
   .cart {
     max-width: 800px;
@@ -131,9 +130,12 @@ import { mapActions, mapGetters } from 'vuex';
     font-size: 18px;
   }
   
+  a {
+    color: black;
+  }
   .cart-item {
     display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center; 
   margin: 6px 0; 
   padding: 8px; 
@@ -142,10 +144,9 @@ import { mapActions, mapGetters } from 'vuex';
   position: relative;
   min-height: 90px;
   }
-  
   .cart-item-details {
-  flex-direction: column;
-  flex-grow: 1; 
+  flex-grow: 1;  /* Allows the details section to take up remaining space */
+  text-align: left;  /* Align text to the left */
 }
   .cart-img {
     max-width: 18%;

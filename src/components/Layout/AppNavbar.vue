@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
       <!-- Logo -->
-      <router-link to="/" class="navbar-brand">Julias</router-link>
+      <router-link to="/" class="navbar-brand">Julias shopping site</router-link>
 
       <!-- Hamburger meny -->
       <button
@@ -22,15 +22,17 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item mx-3">
-            <form @submit.prevent="searchProduct" class="d-flex">
-              <input
-                v-model="searchQuery"
-                class="form-control me-2"
-                type="search"
-                placeholder="Search for products"
-                aria-label="Sök"
-              />
-              <button class="btn btn-outline-light" type="submit">Search</button>
+            <form @submit.prevent="searchProduct" class="d-flex search-form">
+              <div class="search-container">
+                <input
+                  v-model="searchQuery"
+                  class="form-control search-input"
+                  type="search"
+                  placeholder="Search for products"
+                  aria-label="Sök"
+                />
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              </div>
             </form>
           </li>
           <li class="nav-item dropdown">
@@ -119,14 +121,14 @@
                   <img :src="getImageSource(item)" alt="item.name" class="cart-img"/>
                   <div class="cart-item-details">
                     <router-link :to="{name: 'product-detail', params: {id: item.id}}" class="item-name">
-                      <h4>{{ item.name }}</h4>
+                      <p>{{ item.name }}</p>
                     </router-link>
                     <p class="item-price">{{ item.price }} kr</p>
                     <div class="quantity-controls">
                       <button 
                       class="btn-quantity" 
                       @click="updateQuantity(item.id, item.quantity -1)" 
-                      :disabled="item.quantity <= 1"
+                      
                       >
                       -
                     </button>
@@ -139,7 +141,7 @@
                     +
                   </button>
                  
-                  <button class="btn-remove" @click="removeProductFromCart(item.id)">X</button>
+                
                     </div>
                     <div>
                     <p v-if="item.quantity >= item.stockQuantity" class="error-message"> There is not enough in stock to add more..</p>
@@ -216,9 +218,7 @@ export default {
     updateQuantity(productId, quantity) {
       this.updateProductQuantity({productId, quantity});
     },
-    removeProductFromCart(productId) {
-      this.removeProduct(productId);
-    },
+    
     totalPriceForProduct(item) {
       return item.price * item.quantity;
     },
@@ -244,6 +244,17 @@ export default {
  
 }
 
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #343a40; /* Gör så att navbaren syns ordentligt mot en mörk bakgrund */
+}
+.navbar-brand {
+  margin-left: 2rem;
+}
+
 /* Behåll navbarens innehåll centrerat och på rätt ställen */
 .navbar-container {
   display: flex;
@@ -251,6 +262,40 @@ export default {
   align-items: center;
   width: 90%;
   margin: 0 auto;
+}
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  border-radius: 4px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  color: #495057;
+  width: 250px;
+  padding-right: 40px; /* Make room for the icon */
+}
+
+.search-input:focus {
+  border-color: #6c757d;
+  box-shadow: 0 0 5px rgba(108, 117, 125, 0.5);
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #495057;
 }
 .sub-menu li {
 list-style: none;

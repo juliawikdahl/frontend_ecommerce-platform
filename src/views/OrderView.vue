@@ -100,7 +100,7 @@ export default {
       }
       return 'default-image.jpg';
     },
-    formatDate(date) {
+      formatDate(date) {
         return new Date(date).toLocaleDateString('sv-SE');
       },
   }
@@ -132,9 +132,6 @@ padding-left: 0;
   margin-top: 20px;
 }
 
-.loading-message {
-  color: #007BFF;
-}
 
 .error-message {
   color: #FF6347;

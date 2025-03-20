@@ -25,7 +25,7 @@
               <option value="canceled">Canceled</option>
             </select>
           </td>
-          <span v-if="order.disabled">Cant change canceled orders</span>
+          <span class="change-error" v-if="order.disabled">Cant change canceled orders</span>
           <td v-else>
             <button @click="updateOrderStatus(order.orderId, order.newStatus)" :disabled="order.disabled" >Update Status</button>
             <button @click="openEditModal(order)" :disabled="order.disabled">Edit</button>
@@ -239,6 +239,13 @@ async updateOrderStatus(orderId, status) {
     text-align: center;
     
   }
+
+  .change-error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
   button {
     margin-right: 10px;
     padding: 10px 15px;

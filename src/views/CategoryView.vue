@@ -53,6 +53,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+}
 .spinner {
   text-align: center;
   font-size: 24px;
