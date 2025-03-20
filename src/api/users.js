@@ -11,22 +11,21 @@ export const registerUser = (registerData) => {
 };
 
 export const getUserProfile = () => {
-  const token = localStorage.getItem('token'); // Hämtar token från localStorage
+  const token = localStorage.getItem('token'); 
   if (!token) {
     console.log('Ingen token hittades, användaren är inte inloggad');
     return Promise.reject('No token found');
   }
 
-  // Gör ett GET-anrop för att hämta användarens profil
   return axios.get(`${API_URL}/profile`, {
     headers: {
-      'Authorization': `Bearer ${token}`, // Skicka med token i headern
+      'Authorization': `Bearer ${token}`,
     }
   });
 };
 
 export const logoutUser = () => {
-  const token = localStorage.getItem('token'); // Hämta token från localStorage
+  const token = localStorage.getItem('token');
   if (!token) {
       console.log('Ingen token hittades, användaren är inte inloggad');
       return;
@@ -34,12 +33,12 @@ export const logoutUser = () => {
   
   return axios.post(`${API_URL}/logout`, {}, {
       headers: {
-          'Authorization': `Bearer ${token}` // Lägg till token i Authorization-header
+          'Authorization': `Bearer ${token}` 
       }
   })
   .then(response => {
       console.log(response.data);
-      // Ta bort token från localStorage vid logout
+      
       localStorage.removeItem('token');
   })
   .catch(error => {

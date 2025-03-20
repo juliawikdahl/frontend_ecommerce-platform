@@ -17,7 +17,6 @@ import OrderConfirmationView from '@/views/OrderConfirmationView.vue';
 import AboutView from '@/views/AboutView.vue';
 import ContactView from '@/views/ContactView.vue';
 
-
 import store from '@/store';
 
 const routes = [
@@ -31,11 +30,10 @@ const routes = [
     name: 'LoginView',
     component: LoginView,
     beforeEnter: (to, from, next) => {
-      // Om användaren är redan inloggad, omdirigera till hem-sidan
       if (store.getters['auth/isAuthenticated']) {
-        next({ name: 'homeView' }); // Redirect to home if already logged in
+        next({ name: 'homeView' });
       } else {
-        next(); // Otherwise, continue to login page
+        next();
       }
     }
   },
@@ -63,14 +61,14 @@ const routes = [
   {
     path: '/category/:categoryId',
     name: 'categoryView',
-    component: CategoryView,  // Dynamisk vy för att visa produkter per kategori
-    props: true  // Gör så att vi skickar id:t som en prop till komponenten
+    component: CategoryView,
+    props: true
   },
   {
     path: '/subcategory/:subCategoryId',
     name: 'subCategoryView',
-    component: SubCategoryView,  // Dynamisk vy för att visa produkter per kategori
-    props: true  // Gör så att vi skickar id:t som en prop till komponenten
+    component: SubCategoryView,
+    props: true
   },
   {
     path: '/cart',
@@ -90,18 +88,18 @@ const routes = [
   {
     path: '/search',
     name: 'SearchResultsView',
-    component: SearchResultsView, // Använd SearchResults-komponenten för denna rutt
-    props: route => ({ query: route.query.query }) // Skicka query-parametern som prop
+    component: SearchResultsView,
+    props: route => ({ query: route.query.query })
   },
   {
     path: '/payment/:orderId/:totalAmount',
     name: 'PaymentView',
-    component: PaymentView // Betalningssidan
+    component: PaymentView
   },
   {
     path: '/orders',
     name: 'OrderView',
-    component: OrderView // Betalningssidan
+    component: OrderView
   },
   {
     path: '/order-confirmation/:orderId',
@@ -119,22 +117,11 @@ const routes = [
     name: 'ContactView',
     component: ContactView,
     meta: { title: 'Contact Us' }
-  },
-
-
-  // {
-  //   path: '/subcategory/:name',  // Dynamisk ruta för subkategorier
-  //   name: 'subcategory',
-  //   component: SubcategoryView,  // Skapa denna vy för att hantera subkategori
-  //   props: true // Gör så att vi kan få åtkomst till subkategori-namnet som en prop
-  // },
-
- 
- 
+  }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),  // Använd Web History istället för Web Hash
+  history: createWebHistory(),
   routes
 });
 

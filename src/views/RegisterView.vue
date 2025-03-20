@@ -17,6 +17,6 @@
   </script>
   
   <style scoped>
-  /* Lägg till valfri styling här */
+ 
   </style>
   

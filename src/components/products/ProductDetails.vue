@@ -1,13 +1,9 @@
 <template>
   <div class="product-detail">
-    <!-- Visa produktdetaljer om produkten finns -->
     <div v-if="product" class="product-card">
-      <!-- Bilden till vänster -->
       <div class="card-img-container">
         <img :src="getImageSource(product)" alt="product.name" class="card-img-top" />
       </div>
-
-      <!-- Text och knappar till höger -->
       <div class="info-container">
         <div class="d-flex">
           <p class="product-name">
@@ -21,13 +17,11 @@
             </router-link>
           </p>
         </div>
-
         <div >
           <h1 class="product-name">{{ product.name }}</h1>
           <p class="product-price"><strong>{{ product.price }} kr</strong></p>
           <p class="product-description">{{ product.description }}</p>
         </div>
-        <!-- Knappar -->
         <div class="button-container">
           <AddToCartButton :product="product" :showText="true"  />
           <WishlistButton :productId="product.id" />
@@ -37,7 +31,6 @@
           <p class="info-row">Free climate-compensated deliveries</p>
           <p class="info-row">Read more about our return policy and fees</p>
         </div>
-
         <div class="reviews-section">
           <div class="reviews-box" @click="toggleReviews" :aria-expanded="reviewsOpen">
             <span class="reviews-text">Reviews</span>
@@ -51,17 +44,14 @@
             </span>
             <span :class="{'rotated': reviewsOpen}" class="toggle-arrow">▼</span>
           </div>
-
           <div v-if="reviewsOpen" class="reviews-container">
             <div class="review-container" v-if="isAuthenticated">
               <button @click="showReviewForm = !showReviewForm"  class="review-btn">
                 Write a review
               </button>
             </div>
-
             <div v-if="showReviewForm" class="review-form-container">
               <form @submit.prevent="submitReview">
-                <!-- Rating selector -->
                 <div class="review-rating-container">
                   <label for="rating">Rating:</label>
                   <div class="star-rating">
@@ -75,20 +65,15 @@
                     </span>
                   </div>
                 </div>
-
-                <!-- Comment section -->
                 <div class="review-comment-container">
                   <label for="comment">Comment:</label>
                   <textarea v-model="newReview.comment" id="comment" required class="comment-textarea"></textarea>
                 </div>
-
-                <!-- Buttons -->
                 <div class="review-buttons">
                   <button type="submit" class="submit-button">Submit Review</button>
                 </div>
               </form>
             </div>
-
             <div v-if="reviewsLoading" class="spinner">Loading reviews</div>
             <div v-else-if="reviewsError" class="error">{{ reviewsError }}</div>
             <div v-else>
@@ -112,8 +97,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Visa meddelande om ingen produkt finns -->
     <div v-else class="no-product-message">
       <p>No product data available.</p>
     </div>
@@ -122,7 +105,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AddToCartButton from '@/components/products/AddToCartButton.vue';  // Importera AddToCartButton-komponenten
+import AddToCartButton from '@/components/products/AddToCartButton.vue'; 
 import WishlistButton from './WishlistButton.vue';
 import { getProductReviews, postReview } from '@/api/reviews';
 
@@ -145,7 +128,7 @@ export default {
          rating: 0,
         comment: ''
       },
-      hoverRating: 0, // För att visa stjärnorna vid hover
+      hoverRating: 0,
       successMessage: '',
     }
   },
@@ -164,7 +147,6 @@ export default {
     this.fetchReviews();
   },
   methods: {
-
     getImageSource(product) {
       if(product.encodedImage && product.encodedImage.startsWith('data:image')) {
         return product.encodedImage;
@@ -177,25 +159,23 @@ export default {
     formatDate(date) {
       const d = new Date(date);
       const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0'); // Månad +1 eftersom månaderna är 0-indexerade
-      const day = String(d.getDate()).padStart(2, '0'); // Säkerställer att dagen är två siffror
+      const month = String(d.getMonth() + 1).padStart(2, '0'); 
+      const day = String(d.getDate()).padStart(2, '0'); 
       return `${year}-${month}-${day}`;
     },
 
     async fetchReviews() {
       try {
         this.reviews = await getProductReviews(this.product.id);
-        console.log('Server Response:', this.reviews);
         if (!Array.isArray(this.reviews)) {
-          this.reviews = []; // Om reviews inte är en array, gör den till en tom array
+          this.reviews = [];
         }
         this.reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         this.reviewsLoading = false;
       } catch (error) {
-        console.error('Error fetching reviews:', error);
         this.reviewsError = 'Något gick fel när vi hämtade recensionerna.';
         this.reviewsLoading = false;
-        this.reviews = []; // Om något går fel, sätt reviews till en tom array
+        this.reviews = []; 
       }
     },
 
@@ -226,7 +206,7 @@ export default {
     },
 
     setRating(rating) {
-      this.newReview.rating = rating; // Uppdaterar betyget
+      this.newReview.rating = rating; 
     },
 
     async submitReview() {
@@ -238,12 +218,9 @@ export default {
       try {
         const response = await postReview(this.product.id, reviewData);
         
-        console.log('Server Response:', response);
-
         if (response && Array.isArray(response.reviews)) {
           this.reviews = response.reviews;
         } else {
-          console.error('Invalid response format', response);
           this.reviews = [];
         }
 
@@ -254,15 +231,14 @@ export default {
         this.showReviewForm = false;
         this.successMessage = 'Din recension har skickats in och kommer att synas snart!';
       } catch (error) {
-        console.error('Fel vid inlämning av recension:', error);
         this.reviewsError = 'Något gick fel när vi skickade din recension. Försök igen senare.';
       }
     }
   }
 };
 </script>
+
 <style scoped>
-/* Övergripande layout */
 .product-detail {
   display: flex;
   justify-content: center;
@@ -271,21 +247,19 @@ export default {
   background-color: #f4f4f4;
 }
 
-/* Produktkort */
 .product-card {
   display: flex;
-  flex-direction: row; /* Bild och text sida vid sida */
-  align-items: flex-start; /* Justera vertikalt */
+  flex-direction: row;
+  align-items: flex-start;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 8px;
   max-width: 900px;
   width: 100%;
-  gap: 20px; /* Mellanrum mellan bild och text */
+  gap: 20px;
 }
 
-/* Bildcontainer (vänster) */
 .card-img-container {
   width: 60%;
   height: 100%;
@@ -307,7 +281,6 @@ export default {
   object-fit: cover;
 }
 
-/* Info-sektionen (höger) */
 .info-container {
   display: flex;
   flex-direction: column;
@@ -315,7 +288,6 @@ export default {
   flex: 1;
 }
 
-/* Produktnamn */
 .product-name {
   font-weight: bold;
   margin-bottom: 10px;
@@ -331,7 +303,6 @@ export default {
   text-decoration: underline;
 }
 
-/* Beskrivning */
 .product-description {
   font-size: 1.1rem;
   color: #666;
@@ -339,19 +310,16 @@ export default {
   line-height: 1.5;
 }
 
-/* Pris */
 .product-price {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-/* Knappar */
 .button-container {
   display: flex;
   gap: 10px;
 }
 
-/* Meddelande för ingen produkt */
 .no-product-message {
   color: #e74c3c;
   font-size: 1.2rem;
@@ -368,7 +336,6 @@ export default {
   margin: 0;
 }
 
-/* Recensionssektion */
 .reviews-section {
   margin-top: 20px;
   border-top: 1px solid #ccc;
@@ -390,7 +357,6 @@ export default {
   font-weight: bold;
 }
 
-
 .toggle-arrow {
   transition: transform 0.3s ease;
 }
@@ -399,19 +365,12 @@ export default {
   transform: rotate(180deg);
 }
 
-/* Expandera recensioner */
 .reviews-container {
   margin-top: 10px;
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 8px;
 }
-/* .review-container {
-display: flex;
-justify-content: flex-end;
-
-} */
-
 
 .review-card {
   padding: 10px;
@@ -436,8 +395,6 @@ justify-content: flex-end;
   color: #666;
 }
 
-
-/* Formulär för att skriva recension */
 .review-form-container {
   padding: 15px;
   background-color: #fff;
@@ -446,12 +403,10 @@ justify-content: flex-end;
   margin-bottom: 20px;
 }
 
-/* Rubrik */
 .review-form-container h3 {
   font-size: 1.5rem;
 }
 
-/* Betygsättning */
 .review-rating-container {
   margin-bottom: 15px;
   display: flex;
@@ -468,8 +423,6 @@ justify-content: flex-end;
   border-radius: 5px;
 }
 
-/* Stjärnor */
-
 .star {
   font-size: 20px;
   color: #ccc;
@@ -480,6 +433,7 @@ justify-content: flex-end;
 .star.filled {
   color: black;
 }
+
 .star.half {
   background: linear-gradient(90deg, black 50%, #e0e0e0 50%);
   -webkit-background-clip: text;
@@ -490,7 +444,6 @@ justify-content: flex-end;
   color: #e0e0e0;
 }
 
-/* Kommentartextruta */
 .review-comment-container {
   margin-bottom: 15px;
 }
@@ -504,22 +457,20 @@ justify-content: flex-end;
   background-color: #f9f9f9;
 }
 
-/* Knappdesign */
 .review-buttons {
   display: flex;
   justify-content: flex-end;
 }
 
-/* Responsiv design */
 @media (max-width: 768px) {
   .product-card {
-    flex-direction: column; /* Stapla bild och text på små skärmar */
+    flex-direction: column;
     gap: 15px;
   }
 
   .card-img-container {
-    width: 100%; /* Full bredd för bilden */
-    height: 250px; /* Anpassad höjd */
+    width: 100%;
+    height: 250px;
   }
 
   .product-name {
@@ -534,5 +485,4 @@ justify-content: flex-end;
     font-size: 1.2rem;
   }
 }
-
 </style>

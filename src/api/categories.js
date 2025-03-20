@@ -17,7 +17,7 @@ export const postCategory = async (categoryData) => {
   try {
     const response = await axios.post(API_URL, categoryData, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}` // Lägg till token från localStorage om du använder autentisering
+        'Authorization': `Bearer ${localStorage.getItem('token')}` 
       }
     });
     return response.data; // Returnera den skapade kategorin
@@ -66,7 +66,7 @@ export const postSubCategory = async (subCategoryData) => {
       throw new Error("Missing categoryId or name in subCategoryData.");
     }
 
-    // Skicka hela objektet till backend (utan att destrukturera om du inte behöver)
+ 
     const response = await axios.post(`${API_URL}/${subCategoryData.categoryId}/subcategories`, subCategoryData, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

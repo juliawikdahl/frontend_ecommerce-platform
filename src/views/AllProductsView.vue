@@ -11,7 +11,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import AllProductsList from '@/components/products/AllProductsList.vue';  // Importera komponenten
+import AllProductsList from '@/components/products/AllProductsList.vue';  
 
 export default {
   name: 'AllProductsView',
@@ -20,8 +20,8 @@ export default {
   },
   data() {
     return {
-      loading: true,     // För att visa laddningsindikator
-      errorMessage: ''   // För att visa eventuella fel
+      loading: true,     
+      errorMessage: ''   
     };
   },
   computed: {

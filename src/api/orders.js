@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Base URL för Order API
+
 const API_URL = 'https://localhost:7131/api/Orders';
 
-// Funktion för att skapa en order
+
 export const createOrder = async (orderData) => {
   try {
     const token = localStorage.getItem('token'); // Hämta token från localStorage

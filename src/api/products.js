@@ -1,18 +1,18 @@
 import axios from 'axios';
 
-// Base URL för API:et (kan vara din server-URL eller lokal server)
+
 const API_URL = 'https://localhost:7131/api/Products';
 
-// Funktion för att hämta alla produkter
+
 export const getAllProducts = async () => {
   try {
     const response = await axios.get(API_URL);
     console.log('Fetched products:', response.data); 
-    return response.data; // Returnera data som kommer från API:et
+    return response.data;
    
   } catch (error) {
     console.error('Error fetching products:', error);
-    throw error;  // Kasta felet vidare så vi kan fånga det i komponenten
+    throw error;  
   }
 };
 
@@ -69,7 +69,7 @@ export const getProductById = async (id) => {
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.error('You do not have permission to add products.');  // Hantera 401 här
+        console.error('You do not have permission to add products.'); 
       } else {
         console.error('Error creating product:', error);
       }
@@ -101,19 +101,19 @@ export const getProductById = async (id) => {
       console.log(`🔄 Attempting to update product with ID: ${id}`);
   
       if (!id) {
-        console.error('❌ Error: Product ID is missing.');
+        console.error(' Error: Product ID is missing.');
         throw new Error('Product ID is required.');
       }
   
       if (!productData || Object.keys(productData).length === 0) {
-        console.error('❌ Error: Product data is empty or invalid.');
+        console.error('Error: Product data is empty or invalid.');
         throw new Error('Product data is required for update.');
       }
   
       const token = localStorage.getItem('token');
   
       if (!token) {
-        console.error('❌ Error: No authentication token found.');
+        console.error(' Error: No authentication token found.');
         throw new Error('User is not authenticated.');
       }
   
@@ -136,7 +136,7 @@ export const getProductById = async (id) => {
     } catch (error) {
       console.error('❌ Error updating product:', error.response?.data || error.message);
   
-      // Handle specific HTTP errors
+   
       if (error.response) {
         console.error('⚠️ Server responded with:', {
           status: error.response.status,
@@ -144,7 +144,7 @@ export const getProductById = async (id) => {
         });
       }
   
-      // Handle network errors (e.g., no internet connection)
+   
       if (error.code === 'ECONNABORTED' || !navigator.onLine) {
         console.error('⚠️ Network error occurred.');
       }

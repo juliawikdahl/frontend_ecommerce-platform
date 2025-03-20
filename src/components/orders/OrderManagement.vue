@@ -41,7 +41,7 @@
       <span class="total">page {{ currentPage }} of {{ totalPages }}</span>
       <button :disabled="currentPage >= totalPages" @click="currentPage++">Next</button>
     </div>
-    <!-- Modal för att ändra orderns innehåll -->
+    
    
     <div v-if="orderModal" class="modal-overlay">
       <div class="modal-content">
@@ -88,7 +88,7 @@ export default {
     
     console.log('Mounted: Fetching orders and products...');
     this.fetchOrders();
-    this.fetchProducts(); // Hämta produkter
+    this.fetchProducts(); 
  
 
   },
@@ -178,7 +178,7 @@ async updateOrderStatus(orderId, status) {
     async fetchProducts() {
       console.log('Fetching products...');
       try {
-        // Hämta alla produkter från Vuex
+
         await this.$store.dispatch('products/loadAllProducts');
         this.products = this.$store.getters['products/allProducts'];
         console.log('Products fetched:', this.products);
@@ -212,7 +212,7 @@ async updateOrderStatus(orderId, status) {
         await this.$store.dispatch('orders/deleteOrder', orderId);
         console.log('Order deleted successfully');
         alert('Order deleted');
-        this.fetchOrders(); // Refresh orders after deletion
+        this.fetchOrders();
       } catch (error) {
         this.errorMessage = 'Error deleting order';
         console.error('Error deleting order:', error);
@@ -295,14 +295,14 @@ async updateOrderStatus(orderId, status) {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Mörk bakgrund */
+  background: rgba(0, 0, 0, 0.7); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Se till att modalens overlay är ovanpå allt annat */
+  z-index: 1000;
 }
 
-/* Innehåll i modalen */
+
 .modal-content {
   background-color: #fff;
   padding: 30px;

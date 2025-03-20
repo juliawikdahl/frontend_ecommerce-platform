@@ -2,14 +2,14 @@ import axios from 'axios';
 
 const API_URL = 'https://localhost:7131/api/wishlist';
 
-// Hämta token från localStorage eller Vuex store
+
 const getAuthToken = () => {
     const token = localStorage.getItem('token');
-    console.log('Auth Token:(wishlistoken)', token);  // Logga token för att verifiera att den finns
+    console.log('Auth Token:(wishlistoken)', token);  
     return token;
   };
   
-// Hämta hela önskelistan för den inloggade användaren
+
 export const getWishlist = async () => {
   try {
     const token = getAuthToken();
@@ -17,23 +17,23 @@ export const getWishlist = async () => {
       throw new Error('No token found. User is not authenticated.');
     }
     console.log('Hämtar wishlist för användare med token:(getwishlist)', token);
-    // Skicka med token i Authorization header
+  
     const response = await axios.get(API_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     console.log('Wishlist hämtad:(getwishlist)', response.data);
-    return response.data; // Returnera användarens wishlist
+    return response.data; 
   } catch (error) {
     console.error('Failed to fetch wishlist:', error.response || error);
-    return []; // Returnera en tom lista om något går fel
+    return []; 
   }
 };
 
 export const addToWishlist = async (productId) => {
   try {
-    // Skicka produktens ID till backend för att lägga till i wishlist
+  
     const response = await axios.post(
       API_URL,
       { ProductId: productId },
@@ -45,7 +45,7 @@ export const addToWishlist = async (productId) => {
     );
     console.log('Produkt tillagd i din önskelista:', response.data);
   } catch (error) {
-    // Om produkten redan finns i wishlist, kommer backend att returnera en konflikt
+  
     if (error.response && error.response.status === 409) {
       console.log('Produkten finns redan i din önskelista.');
     } else {
@@ -55,7 +55,6 @@ export const addToWishlist = async (productId) => {
 };
 
 
-// Ta bort en produkt från den inloggade användarens wishlist
 export const removeFromWishlist = async (productId) => {
   try {
     console.log('Försöker ta bort produkt med ID:', productId);

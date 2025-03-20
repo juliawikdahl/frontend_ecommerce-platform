@@ -23,7 +23,7 @@
     },
     methods: {
       submitForm() {
-        // Hantera formulärinlämning här
+        
         console.log('Form submitted!', this.name, this.email, this.message);
       }
     }

@@ -31,8 +31,8 @@
         this.isDropdownOpen = !this.isDropdownOpen;
       },
       handleSorting(orderBy) {
-        this.$emit('updateSortOrder', orderBy); // Emit the sorting order back to the parent
-        this.isDropdownOpen = false; // Close the dropdown after sorting
+        this.$emit('updateSortOrder', orderBy);
+        this.isDropdownOpen = false; 
       },
     },
   };
@@ -58,7 +58,7 @@
 
 .sort-dropdown {
   position: absolute;
-  top: 40px; /* Justera detta för att passa din layout */
+  top: 40px; 
   left: 0;
   background-color: white;
   border: 1px solid #ccc;

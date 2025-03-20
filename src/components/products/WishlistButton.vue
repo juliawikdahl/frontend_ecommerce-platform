@@ -19,7 +19,7 @@
     computed: {
       ...mapGetters('auth', ['isAuthenticated']),
   isInWishlist() {
-    return this.$store.getters['wishlist/isProductInWishlist'](this.productId); // Lägg till 'wishlist/' före getter-namnet
+    return this.$store.getters['wishlist/isProductInWishlist'](this.productId); 
   }
 },
 
@@ -50,11 +50,11 @@
 }
 
 .wishlist-button i {
-  color: #888; /* Standardfärg för hjärtat */
+  color: #888; 
   font-size: 20px;
 }
 .wishlist-button i:hover {
-  transform: scale(1.2); /* Förstorar hjärtat lite när du hovrar över det */
+  transform: scale(1.2); 
 }
 
 .wishlist-button .fa-heart.far {

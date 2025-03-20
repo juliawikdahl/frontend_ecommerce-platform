@@ -78,10 +78,10 @@ export default {
 }
 
 .login-form {
-  background-color: #ffffff; /* Vit bakgrund för formuläret */
+  background-color: #ffffff; 
   padding: 30px;
-  border-radius: 12px; /* Rundade hörn */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtil skugga */
+  border-radius: 12px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
   width: 100%;
   max-width: 400px;
 

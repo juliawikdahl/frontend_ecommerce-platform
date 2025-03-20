@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'https://localhost:7131/api/Payment'; // Uppdatera till din faktiska backend-URL om det behövs
+const API_URL = 'https://localhost:7131/api/Payment';
 
-// Funktion för att hämta token från localStorage
+
 const getToken = () => {
   const token = localStorage.getItem('token'); // Hämtar token från localStorage
   if (!token) {
@@ -49,10 +49,10 @@ export const confirmOrder = async (orderId, confirmationData) => {
   try {
     const token = getToken(); // Hämtar token från localStorage eller annan källa
 
-    // Lägg till token i headers
+    
     const response = await axios.post(`${API_URL}/${orderId}/confirm`, confirmationData, {
       headers: {
-        'Authorization': `Bearer ${token}`, // Lägg till token här också
+        'Authorization': `Bearer ${token}`,
       },
     });
 

@@ -2,13 +2,13 @@
   <footer class="footer bg-dark text-light">
     <div class="container">
       <div class="row">
-        <!-- About Us and Contact -->
+      
         <div class="col-md-4">
           <h5>About Julias Shopping Site</h5>
           <p>We offer a wide range of products to suit all your needs. Discover our categories and find the best products for you!</p>
         </div>
 
-        <!-- Quick Links -->
+    
         <div class="col-md-4">
           <h5>Quick Links</h5>
           <ul class="list-unstyled">
@@ -17,7 +17,7 @@
           </ul>
         </div>
 
-        <!-- Social Media -->
+
         <div class="col-md-4">
           <h5>Follow Us</h5>
           <div class="social-icons">
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <!-- Copyright -->
+ 
       <div class="text-center mt-5">
         <p>&copy; 2025 Julias Shopping Site. All rights reserved.</p>
       </div>
@@ -69,7 +69,7 @@ export default {
 
 .footer .social-icons a:hover {
   color: #007bff;
-  transform: scale(1.1); /* Gör ikonerna lite större vid hover */
+  transform: scale(1.1); 
 }
 
 .footer .text-light {
@@ -88,7 +88,7 @@ export default {
   margin-bottom: 10px;
 }
 
-/* Responsiveness */
+
 @media (max-width: 768px) {
   .footer .row {
     text-align: center;
@@ -104,11 +104,11 @@ export default {
   }
 
   .footer h5 {
-    font-size: 1.125rem; /* Minska storleken på titlar för små skärmar */
+    font-size: 1.125rem; 
   }
 
   .footer p {
-    font-size: 0.9rem; /* Gör texten lite mindre på små skärmar */
+    font-size: 0.9rem;
   }
 }
 </style>

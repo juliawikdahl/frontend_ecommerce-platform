@@ -205,14 +205,12 @@ export default {
     },
   },
 };
-</script>
-
-<style scoped>
+</script><style scoped>
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Fyra kolumner */
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
-  margin: 0 auto; /* Centrerar griden */
+  margin: 0 auto;
 }
 
 .product-card {
@@ -224,18 +222,19 @@ export default {
 .card-img-container {
   position: relative;
   width: 100%;
-  height: 250px; /* Ger en fast höjd för bilden */
+  height: 250px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skuggning runt boxen */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  border-radius: 8px; /* Rundar hörnen på boxen */
+  border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-img-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Förstärkt skugga vid hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
 .delete-button {
   position: absolute;
   top: 10px;
@@ -255,7 +254,7 @@ export default {
 .edit-button {
   position: absolute;
   top: 10px;
-  left: 10px; /* Flytta knapparna till vänstra sidan */
+  left: 10px;
   border: none;
   padding: 5px 8px;
   border-radius: 50%;
@@ -268,12 +267,10 @@ export default {
   background: green;
 }
 
-
-
 .card-img-top {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Gör att bilden anpassar sig till boxen */
+  object-fit: cover;
 }
 
 .product-name {
@@ -287,24 +284,25 @@ export default {
   font-size: 1.1rem;
   color: #777;
 }
+
 .info-container {
   display: flex;
-  justify-content: space-between; /* Sprider elementen jämnt mellan vänster och höger */
-  align-items: center; /* Vertikal centrering */
-  width: 100%; /* Säkerställer att den tar upp hela bredden */
-  margin-top: 10px; /* Avstånd mellan bild och text/kontroller */
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .product-info {
-  flex: 1; /* Tillåter vänstra sektionen att ta upp så mycket plats som behövs */
-  text-align: left; /* Vänsterjustera texten */
+  flex: 1;
+  text-align: left;
 }
 
 .button-container {
   display: flex;
   margin-right: 0.5rem;
 }
-/* Modal-styling */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -362,7 +360,6 @@ export default {
   outline: none;
 }
 
-/* === KNAPPSTYLING === */
 .modal button {
   padding: 10px;
   border: none;
@@ -380,12 +377,12 @@ export default {
 .modal button[type="submit"]:hover {
   background: #0056b3;
 }
-.image-preview {
-  width: 50px;  /* Gör bilden 50px bred */
-  height: 50px; /* Gör bilden 50px hög */
-  object-fit: cover; /* Förhindrar att bilden blir förvrängd om den inte har rätt proportioner */
-}
 
+.image-preview {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
 
 .cancel-button {
   background: #6c757d;
@@ -395,7 +392,6 @@ export default {
 .cancel-button:hover {
   background: #5a6268;
 }
-
 
 .form-row {
   display: flex;
@@ -411,18 +407,18 @@ export default {
 
 @media (max-width: 1024px) {
   .products-grid {
-    grid-template-columns: repeat(2, 1fr); /* Två kolumner för mindre skärmar */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .products-grid {
-    grid-template-columns: 1fr; /* En kolumn för mobil */
+    grid-template-columns: 1fr;
   }
 
   .card-img-container {
-    height: 200px; /* Justera bildhöjd på mobil */
+    height: 200px;
   }
 }
-
 </style>
+

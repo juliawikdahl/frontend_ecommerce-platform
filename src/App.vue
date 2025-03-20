@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style>
-/* Global styling för applikationen */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -33,11 +33,11 @@ body {
 #app {
   min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Gör sidan till en flex-container med vertikal layout */
+  flex-direction: column; 
 }
 
 .main-content {
-  flex: 1; /* Gör att main-content fyller upp det lediga utrymmet */
+  flex: 1; 
   margin-top: 6rem;
 }
 

@@ -16,13 +16,13 @@ export const postReview = async (productId, reviewData) => {
       reviewData,
       {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Skicka med token för autentisering
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, 
         }
       }
     );
-    return response.data; // Svara med det skapade svaret från servern
+    return response.data; 
   } catch (error) {
     console.error('Error posting review:', error);
-    throw error; // Vid fel, kasta felet så att det kan hanteras på frontend
+    throw error; 
   }
 };

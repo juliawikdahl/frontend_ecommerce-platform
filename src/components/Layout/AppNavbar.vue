@@ -185,7 +185,7 @@ export default {
   },
   watch: {
   searchQuery(newQuery) {
-    console.log("Sökfrågan ändrades till:", newQuery);  // Loggar varje gång sökfrågan ändras
+    console.log("Sökfrågan ändrades till:", newQuery);  
   }
 },
   methods: {
@@ -235,7 +235,7 @@ export default {
 </script>
 
 <style scoped>
-/* Grundläggande stil för navbar */
+
 .navbar {
   background-color: #333;
   padding: 15px 0;
@@ -249,13 +249,13 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  background-color: #343a40; /* Gör så att navbaren syns ordentligt mot en mörk bakgrund */
+  background-color: #343a40; 
 }
 .navbar-brand {
   margin-left: 2rem;
 }
 
-/* Behåll navbarens innehåll centrerat och på rätt ställen */
+
 .navbar-container {
   display: flex;
   justify-content: space-between;
@@ -281,7 +281,7 @@ export default {
   background-color: #f8f9fa;
   color: #495057;
   width: 250px;
-  padding-right: 40px; /* Make room for the icon */
+  padding-right: 40px;
 }
 
 .search-input:focus {
@@ -302,7 +302,7 @@ list-style: none;
 }
 
 .text-muted {
-  color: #6c757d; /* Grå text för "Inga subkategorier" */
+  color: #6c757d; 
   font-style: italic;
 }
 
@@ -353,11 +353,11 @@ list-style: none;
 }
 
 .btn-quantity {
-  background-color: white; /* Blå färg */
-  color: black; /* Vit text */
+  background-color: white; 
+  color: black; 
   border: 1px solid black;
   padding: 0px 10px;
-  cursor: pointer; /* Gör knappen klickbar */
+  cursor: pointer; 
   transition: background-color 0.3s, transform 0.3s; 
   padding-left: 5px;
   padding-right: 5px;
@@ -366,15 +366,15 @@ list-style: none;
   font-size: 12px;
 }
 .btn-quantity:hover {
-  background-color: #c5c9cb; /* Mörkare blå färg vid hover */
-  transform: scale(1.1); /* Gör knappen lite större vid hover */
+  background-color: #c5c9cb; 
+  transform: scale(1.1); 
 }
 .btn-quantity:disabled {
-  background-color: #e0e0e0; /* Ljusgrå bakgrund för disabled */
-  color: #a0a0a0; /* Ljusgrå text */
-  cursor: not-allowed; /* Förhindrar att muspekaren blir en hand */
-  border: 1px solid #d0d0d0; /* Ljusare kantlinje */
-  transform: none; /* Förhindrar hover-effekten */
+  background-color: #e0e0e0; 
+  color: #a0a0a0;
+  cursor: not-allowed; 
+  border: 1px solid #d0d0d0; 
+  transform: none; 
 }
 .btn-remove {
   background-color: #f44336;
@@ -389,13 +389,13 @@ list-style: none;
   font-size: 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  padding: 0; /* Säkerställer att inga extra padding läggs till */
-  box-sizing: border-box; /* Inkluderar border och padding i bredd/höjd */
+  padding: 0; 
+  box-sizing: border-box; 
   margin-left: 0.5rem;
 }
 .btn-remove:hover {
-  background-color: #e53935; /* Lite mörkare röd vid hover */
-  transform: scale(1.1); /* Gör knappen lite större vid hover */
+  background-color: #e53935; 
+  transform: scale(1.1); 
 }
 .error-message {
   color: red;

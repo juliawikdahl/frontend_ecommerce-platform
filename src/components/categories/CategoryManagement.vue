@@ -178,14 +178,14 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Mörk bakgrund */
+  background: rgba(0, 0, 0, 0.7); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Se till att modalens overlay är ovanpå allt annat */
+  z-index: 1000; 
 }
 
-/* Innehåll i modalen */
+
 .modal-content {
   background-color: #fff;
   padding: 30px;
@@ -229,7 +229,7 @@ button {
 
 .subcategory-container {
   margin-top: 10px;
-  padding-left: 25px; /* Gör så att subkategorierna går inåt */
+  padding-left: 25px; 
 }
 
 .subcategory {
